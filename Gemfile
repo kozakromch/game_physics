@@ -8,5 +8,6 @@ gem 'jekyll-feed'
 gem 'jekyll-readme-index'
 gem 'jemoji'
 gem 'webrick'
+gem "github-pages", "~> 231", group: :jekyll_plugins
 
 # gem "rails"
