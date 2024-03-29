@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://kozakromch.github.io/physics-in-games/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kozakromch.github.io/physics-in-games/" rel="alternate" type="text/html" /><updated>2024-03-29T19:11:29+03:00</updated><id>https://kozakromch.github.io/physics-in-games/feed.xml</id><title type="html">Physics in Games</title><subtitle>Physics in Games is a collection of articles about physics in video games. The articles are written in a simple and understandable language, so that even a person who is not familiar with physics can understand them.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://kozakromch.github.io/physics-in-games/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kozakromch.github.io/physics-in-games/" rel="alternate" type="text/html" /><updated>2024-03-29T19:26:33+03:00</updated><id>https://kozakromch.github.io/physics-in-games/feed.xml</id><title type="html">Physics in Games</title><subtitle>Physics in Games is a collection of articles about physics in video games. The articles are written in a simple and understandable language, so that even a person who is not familiar with physics can understand them.
 </subtitle><author><name>Roman Kozak</name></author><entry><title type="html">Численные методы</title><link href="https://kozakromch.github.io/physics-in-games/jekyll/2024-03-28-lecture_2.html" rel="alternate" type="text/html" title="Численные методы" /><published>2024-03-28T00:00:00+03:00</published><updated>2024-03-28T00:00:00+03:00</updated><id>https://kozakromch.github.io/physics-in-games/jekyll/lecture_2</id><content type="html" xml:base="https://kozakromch.github.io/physics-in-games/jekyll/2024-03-28-lecture_2.html"><![CDATA[<div>
 В прошлой лекции мы попытались решить уравнения движения аналитически. Поскольку некоторые уравнения были не разрешимы, то мы их линеаризовывали. Однако многие эффекты терялись поскольку были нелинейными. 
 Поскольку аналитически решить все уравнения невозможно, то мы перейдем к численным методам.
@@ -294,7 +294,7 @@ of your post.</p>
 <span class="na">title</span><span class="pi">:</span> <span class="s">Diagrams with mermaid.js</span>
 <span class="na">date</span><span class="pi">:</span> <span class="s">2023-08-31</span>
 <span class="na">layout</span><span class="pi">:</span> <span class="s">post</span>
-<span class="na">mermaid</span><span class="pi">:</span> <span class="kc">true</span>
+<span class="na">mermaid</span><span class="pi">:</span> <span class="no">true</span>
 <span class="nn">---</span>
 </code></pre></div></div>
 
@@ -489,7 +489,7 @@ The TOC feature is not enabled by default. To use the TOC feature, modify the TO
 configuration in <code class="language-plaintext highlighter-rouge">_config.yml</code>:</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">toc</span><span class="pi">:</span>
-    <span class="na">enabled</span><span class="pi">:</span> <span class="kc">true</span>
+    <span class="na">enabled</span><span class="pi">:</span> <span class="no">true</span>
 </code></pre></div></div>
 
 <h2 id="why-this-repo">Why this repo</h2>
