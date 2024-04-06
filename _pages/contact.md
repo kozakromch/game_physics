@@ -1,9 +1,9 @@
 ---
 title: Contact
-author: Tao He
-date: 2022-02-05
+author: Roman Kozak
+date: 2024-04-05
 category: Jekyll
 layout: post
 ---
 
-This is an contact page.
+kozakromch@yandex.ru

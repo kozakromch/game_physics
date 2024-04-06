@@ -1,4 +1,9 @@
-{"/physics-in-games/pages/about/": {
+{"/physics-in-games/pages/design/draft/": {
+    "title": "Design Draft",
+    "keywords": "Jekyll",
+    "url": "/physics-in-games/pages/design/draft/",
+    "body": "This is an draft page."
+  },"/physics-in-games/pages/about/": {
     "title": "About",
     "keywords": "Jekyll",
     "url": "/physics-in-games/pages/about/",
@@ -7,60 +12,10 @@
     "title": "Contact",
     "keywords": "Jekyll",
     "url": "/physics-in-games/pages/contact/",
-    "body": "This is an contact page."
-  },"/physics-in-games/pages/design/draft/": {
-    "title": "Design Draft",
-    "keywords": "Jekyll",
-    "url": "/physics-in-games/pages/design/draft/",
-    "body": "This is an draft page."
-  },"/physics-in-games/jekyll/2024-03-28-lecture_2.html": {
+    "body": "kozakromch@yandex.ru"
+  },"/physics-in-games/jekyll/2024-03-28-numerical_method.html": {
     "title": "Численные методы",
     "keywords": "Jekyll",
-    "url": "/physics-in-games/jekyll/2024-03-28-lecture_2.html",
+    "url": "/physics-in-games/jekyll/2024-03-28-numerical_method.html",
     "body": "В прошлой лекции мы попытались решить уравнения движения аналитически. Поскольку некоторые уравнения были не разрешимы, то мы их линеаризовывали. Однако многие эффекты терялись поскольку были нелинейными. Поскольку аналитически решить все уравнения невозможно, то мы перейдем к численным методам. Посмотрим на уравнение в общем виде \\begin{equation} \\dot{x} = f(x) \\end{equation} и мы пытались получить из него решение вида \\begin{equation} x = F(t) + C \\end{equation} подставив в которое начальные коодинаты мы могли найти положение в любой момент времени. Теперь же мы будем искать траекторию, т.е. из начальной координаты $x_0$ численно находим положение в следующий момент времени $x_1$, из него аналогично $x_2$ и т.д. Где раньше мы находили все фазовые траектории, теперь мы будем находить только одну, и ту приближенно. Методы Эйлера Воспользуемся следующим приближением: \\begin{equation} \\dot{x} = \\frac{dx}{dt} = \\lim_{\\Delta t\\rightarrow 0} \\frac{x(t + \\Delta t) -x(t)}{\\Delta t} \\approx \\frac{x(t + \\Delta t) -x(t)}{\\Delta t}, \\end{equation} Пронумеровав положения в узлах и подставив в начальное уравнение, получим \\begin{equation} \\begin{split} \\dot{x_k} = \\frac{x_{k+1} -x_k}{\\Delta t} = f(x_k),\\\\ x_{k+1} = x_k + \\dot{x_k}\\Delta t = x_k + f(x_k)\\Delta t \\end{split} \\end{equation} Как можно заметить, результатом стала явная схема, т.к. зная $x_k$, можно напрямую вычислить $x_{k+1}$. Построим аналогично неявную схему: \\begin{equation} \\begin{split} \\dot{x} \\approx \\frac{x(t) - x(t - \\Delta t)}{\\Delta t},\\\\ \\dot{x_k} = \\frac{x_k - x_{k-1}}{\\Delta t} = f(x_k),\\\\ x_{k+1} = x_k + \\dot{x_{k+1}}\\Delta t = x_k + f(x_{k+1})\\Delta t \\end{split} \\end{equation} Понятно, что неявная схема является более сложной, т.к. в ней нельзя напрямую вычислить следующее положение по предыдущему. Придется или преобразовывать $f(x_{k+1})$, или итеративно подбирать наилучший $x_{k+1}$. Зачем тогда вообще пользоваться неявным методом? Дело в том, что прямой метод \"вкачивает\" в систему энергию, что в конкретных случаях может быть опасно. Обратный метод, в свою очередь, энергию \"выкачивает\". Он тоже не дает точного приближения, но система с меньшей энергией в среднем более стабильна, за счет чего неявная схема зачастую выигрывает против явной. \\subsubsection{Новая пружинка} Рассмотрим уже обсужденную задачу с пружинкой, но добавим теперь вязкое трение. К уже обсужденным закону Гука ($F(x) = -k \\cdot x$) и второму закону Ньютона ($\\Sigma \\vec{F} = m \\cdot \\vec{a}$) добавится закон вязкого трения: \\begin{equation} \\vec{F} = -c \\cdot \\vec{V} \\end{equation} \\input{pics/Scheme.tex} Введем новые обозначения: \\begin{equation} \\begin{split} d = \\frac{c}{2 \\sqrt{km}},\\\\ \\omega_0 = \\sqrt{\\frac{k}{m}} \\end{split} \\end{equation} Подставляя всё это во второй закон Ньютона, получим \\begin{equation} \\ddot{x} + 2d\\omega_0\\dot{x} + \\omega_0^2 x = 0 \\end{equation} Как и ранее, запишем вектор \\begin{equation} z = \\begin{bmatrix} 1 &amp; x &amp; x^2 \\\\ 1 &amp; y &amp; y^2 \\\\ 1 &amp; z &amp; z^2 \\\\ \\end{bmatrix} \\end{equation} Тогда уравнение перепишем в виде \\begin{equation} \\dot{z} = \\begin{bmatrix} 0 &amp; 1 \\\\ -\\omega_0^2 &amp; -2d\\omega_0 \\\\ \\end{bmatrix} \\cdot z = A \\cdot z \\end{equation} Подставляя на место $\\dot{z}$ обсужденное выше приближенное значение, получим следующие равенства для явной$(1)$ и неявной$(2)$ схем: \\begin{equation} \\begin{split} z_{k+1} = (I + A\\cdot\\Delta t)\\cdot z_k = F\\cdot z_k\\qquad (1)\\\\ z_{k+1} = (I - A\\cdot\\Delta t)^{-1}\\cdot z_k = B\\cdot z_k\\qquad (2) \\end{split} \\end{equation} По индукции, получим \\begin{equation} \\begin{split} z_k = F^k\\cdot z_0\\qquad (1)\\\\ z_k = B^k\\cdot z_0\\qquad (2) \\end{split} \\end{equation} Зона устойчивости \\input{pics/stable_zone_fwd.tex} Когда обсуждались аналитические решения, было показано, что для устойчивости решения \\begin{equation} \\dot{y}=A\\cdot y \\end{equation} достаточно условия \\begin{equation} Re(eig(A)) &lt; 0. \\end{equation} Попробуем найти аналогичные условия для явного и неявного методов Эйлера. Для явного метода, переходя к собственным векторам, получим \\begin{equation} y_{k+1} = (1 + \\Delta t \\cdot \\lambda)\\cdot y_k \\end{equation} Для устойчивости решения необходимо \\begin{equation} |1 + \\Delta t \\cdot \\lambda| &lt; 1 \\end{equation} Заметим, что меньшие значения $\\lambda$ и $\\Delta t$ имеют больший шанс попадания в зону стабильности. \\input{pics/stable_zone_bwd.tex} Для неявного метода, переходя к собственным векторам, получим \\begin{equation} y_{k+1} = (1 - \\Delta t \\cdot \\lambda)^{-1}\\cdot y_k \\end{equation} Для устойчивости решения необходимо \\begin{equation} |(1 - \\Delta t \\cdot \\lambda)^{-1}| &lt; 1 \\Leftrightarrow |1 - \\Delta t \\cdot \\lambda| &gt; 1 \\end{equation} Сразу можно заметить, что зона устойчивости для неявного метода больше, чем у явного; однако при некоторых собственных значений уменьшение временного шага ухудшает стабильность,\\\\чего для явного метода не наблюдалось."
-  },"/physics-in-games/jekyll/2023-12-12-footnotes.html": {
-    "title": "Using Footnotes",
-    "keywords": "Jekyll",
-    "url": "/physics-in-games/jekyll/2023-12-12-footnotes.html",
-    "body": "This jekyll-theme supports MathJax to render footnotes in markdown. e.g., The well known Pythagorean theorem $x^2 + y^2 = z^2$ was proved to be invalid for other exponents[^1]. Meaning the next equation has no integer solutions: $$ x^n + y^n = z^n $$ The well known Pythagorean theorem $x^2 + y^2 = z^2$ was proved to be invalid for other exponents1. Meaning the next equation has no integer solutions: \\[x^n + y^n = z^n\\] Long contents long contents ….. a b c d Sub title 1 Sub title 2 Sub title 3 Long contents long contents ….. a b c d Sub title 1 Sub title 2 Sub title 3 Long contents long contents ….. a b c d Sub title 1 Sub title 2 Sub title 3 Long contents long contents ….. a b c d Sub title 1 Sub title 2 Sub title 3 Long contents long contents ….. a b c d Sub title 1 Sub title 2 Sub title 3 Long contents long contents ….. a b c d Sub title 1 Sub title 2 Sub title 3 https://en.wikipedia.org/wiki/Fermat%27s_Last_Theorem &#8617;"
-  },"/physics-in-games/jekyll/2023-10-14-math-latex.html": {
-    "title": "MathJax and LaTeX",
-    "keywords": "Jekyll",
-    "url": "/physics-in-games/jekyll/2023-10-14-math-latex.html",
-    "body": "This jekyll-theme supports MathJax to render $\\LaTeX$ and mathematics expressions. TIP Currently, Kramdown uses double dollar sign delimiters for inline and display math: https://kramdown.gettalong.org/syntax.html#math-blocks. e.g., The well known Pythagorean theorem $x^2 + y^2 = z^2$ was proved to be invalid for other exponents. Meaning the next equation has no integer solutions: $$ x^n + y^n = z^n $$ The well known Pythagorean theorem $x^2 + y^2 = z^2$ was proved to be invalid for other exponents. Meaning the next equation has no integer solutions: \\[x^n + y^n = z^n\\] Another example with more complex markups: When $a \\ne 0$, there are two solutions to $ax^2 + bx + c = 0$ and they are $$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.$$ When $a \\ne 0$, there are two solutions to $ax^2 + bx + c = 0$ and they are \\[x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.\\] Refer to the MathJax website for more examples."
-  },"/physics-in-games/jekyll/2023-08-31-mermaid.html": {
-    "title": "Diagrams with mermaid.js",
-    "keywords": "Jekyll",
-    "url": "/physics-in-games/jekyll/2023-08-31-mermaid.html",
-    "body": "This jekyll-theme supports mermaid.js to render diagrams in markdown. To enable the mermaid support, you need to set mermaid: true in the front matter of your post. --- title: Diagrams with mermaid.js date: 2023-08-31 layout: post mermaid: true --- Then you can use mermaid syntax in your markdown: graph TD; A--&gt;B; A--&gt;C; B--&gt;D; C--&gt;D; graph TD; A--&gt;B; A--&gt;C; B--&gt;D; C--&gt;D; Or, even some complex examples: sequenceDiagram participant Alice participant Bob Alice-&gt;&gt;John: Hello John, how are you? loop Healthcheck John-&gt;&gt;John: Fight against hypochondria end Note right of John: Rational thoughts &lt;br/&gt;prevail! John--&gt;&gt;Alice: Great! John-&gt;&gt;Bob: How about you? Bob--&gt;&gt;John: Jolly good! sequenceDiagram participant Alice participant Bob Alice-&gt;&gt;John: Hello John, how are you? loop Healthcheck John-&gt;&gt;John: Fight against hypochondria end Note right of John: Rational thoughts &lt;br/&gt;prevail! John--&gt;&gt;Alice: Great! John-&gt;&gt;Bob: How about you? Bob--&gt;&gt;John: Jolly good! Refer to the mermaid.js website for more examples."
-  },"/physics-in-games/jekyll/2022-06-30-tips_warnings_dangers.html": {
-    "title": "Tips, Warnings, and Dangers",
-    "keywords": "Jekyll",
-    "url": "/physics-in-games/jekyll/2022-06-30-tips_warnings_dangers.html",
-    "body": "This jekyll-theme supports tips, warnings, and dangers blocks and the style is referred from the discord.js website. You could have the following markdown attributes (supported by kramdown): Tips Using a {: .block-tip} attribute: &gt; ##### TIP &gt; &gt; This guide is last tested with @napi-rs/canvas^0.1.20, so make sure you have &gt; this or a similar version after installation. {: .block-tip } TIP This guide is last tested with @napi-rs/canvas^0.1.20, so make sure you have this or a similar version after installation. Warnings Using a {: .block-warning} attribute: &gt; ##### WARNING &gt; &gt; Be sure that you're familiar with things like async/await and object destructuring &gt; before continuing, as we'll be making use of features like these. {: .block-warning } WARNING Be sure that you’re familiar with things like async/await and object destructuring before continuing, as we’ll be making use of features like these. Dangers Using a {: .block-danger} attribute: &gt; ##### DANGER &gt; &gt; You cannot delete an ephemeral message. {: .block-danger } DANGER You cannot delete an ephemeral message."
-  },"/physics-in-games/jekyll/2022-06-26-wide_tables.html": {
-    "title": "Wide tables",
-    "keywords": "Jekyll",
-    "url": "/physics-in-games/jekyll/2022-06-26-wide_tables.html",
-    "body": "A wide tables needs to be wrapped into a div with class table-wrapper to make sure it displayed as expected on mobile devices. For example, &lt;div class=\"table-wrapper\" markdown=\"block\"&gt; |title1|title2|title3|title4|title5|title6|title7|title8| |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:| |1|2|3|4|5|6|7|8| |1|2|3|4|5|6|7|8| |1|2|3|4|5|6|7|8| |1|2|3|4|5|6|7|8| &lt;/div&gt; Will be rendered as title1 title2 title3 title4 title5 title6 title7 title8 1 2 3 4 5 6 7 8 1 2 3 4 5 6 7 8 1 2 3 4 5 6 7 8 1 2 3 4 5 6 7 8"
-  },"/physics-in-games/jekyll/2022-05-24-page_cover.html": {
-    "title": "Page with cover image",
-    "keywords": "Jekyll",
-    "url": "/physics-in-games/jekyll/2022-05-24-page_cover.html",
-    "body": "The jekyll-gitbook theme supports adding a cover image to a specific page by adding a cover field to the page metadata: --- title: Page with cover image author: Tao He date: 2022-05-24 category: Jekyll layout: post + cover: /assets/jekyll-gitbook/dinosaur.gif ---"
-  },"/physics-in-games/jekyll/2021-08-10-toc.html": {
-    "title": "How to Generate TOC",
-    "keywords": "Jekyll",
-    "url": "/physics-in-games/jekyll/2021-08-10-toc.html",
-    "body": "The jekyll-gitbook theme leverages jekyll-toc to generate the Contents for the page. The TOC feature is not enabled by default. To use the TOC feature, modify the TOC configuration in _config.yml: toc: enabled: true Why this repo long contents ….. a b c d Sub title 1 Sub title 2 Sub title 3 Why this repo long contents ….. 1 2 3 4 Why this repo long contents ….. e f g h Why this repo 5 6 7 8 Why this repo long contents ….. a b c d Why this repo long contents ….. 1 2 3 4 Why this repo long contents ….. e f g h Why this repo 5 6 7 8 Why this repo long contents ….. a b c d Why this repo long contents ….. 1 2 3 4 Why this repo long contents ….. e f g h Why this repo 5 6 7 8 Why this repo long contents ….. a b c d Why this repo long contents ….. 1 2 3 4 Why this repo long contents ….. e f g h Why this repo 5 6 7 8"
-  },"/physics-in-games/jekyll/2019-04-29-license.html": {
-    "title": "License",
-    "keywords": "Jekyll",
-    "url": "/physics-in-games/jekyll/2019-04-29-license.html",
-    "body": "This work is open sourced under the Apache License, Version 2.0, using the same license as the original GitBook repository. Copyright 2019 Tao He."
-  },"/physics-in-games/jekyll/2019-04-28-howto.html": {
-    "title": "How to Get Started",
-    "keywords": "Jekyll",
-    "url": "/physics-in-games/jekyll/2019-04-28-howto.html",
-    "body": "The jekyll-gitbook theme can be used just as other Jekyll themes and support remote theme on Github Pages, see the official guide as well. You can introduce this jekyll theme into your own site by either Fork this repository and add your markdown posts to the _posts folder, then push to your own Github repository. Use as a remote theme in your _config.yml(just like what we do for this site itself), # Configurations title: Jekyll Gitbook longtitle: Jekyll Gitbook remote_theme: sighingnow/jekyll-gitbook TIP No need to push generated HTML bundle."
   }}
