@@ -1,35 +1,27 @@
 const forward_euler = p => {
 
-let mass;
-let springStiffness = 0.1;
-let damping = 0.9;
-let restLength = 200;
+let mass = 1;
+let springFrequency = 0.5*3.14;
+let damping = 0.0;
 let springPos;
-let velocity = 10.; 
-let acceleration = 0;
-let dampingForce = 0;
-let kineticEnergy = 0;
-let potentialEnergy = 0;
-let initialTotalEnergy = 0;
-let minEnergy, maxEnergy; // Variables to store min and max energy values
-
+let middlePoint;
+let velocity = 100.0; 
+let totalEnergy = 0.;
+let initialTotalEnergy = 0.;
+let minEnergy = undefined;
+let maxEnergy = undefined; // Variables to store min and max energy values
+let eye = math.matrix([[1, 0], [0, 1]]);
+let dt = 0.1;
 let isPaused = false;
 
 let energyHistory = []; // Stores energy values over time
 const maxHistoryLength = 400; // Max number of energy points to store
 
-let dampingSlider;
-let stiffnessSlider;
-
 p.setup = function() {
-  const canvas = p.createCanvas(600, 400);
+  const canvas = p.createCanvas(500, 300);
   canvas.parent('forward_euler');
-  mass = 20;
   springPos = p.createVector(p.width / 2, p.height / 2);
-
-  // Initialize energyHistory with initial total energy at the middle height
-  initialTotalEnergy = calculateTotalEnergy();
-  energyHistory.push(initialTotalEnergy);
+  middlePoint = springPos.y;  
 
   // Create buttons
   let pauseButton = p.createButton('Pause');
@@ -41,84 +33,34 @@ p.setup = function() {
   resetButton.parent('forward_euler');    
   resetButton.position(70, 10, 'relative');
   resetButton.mousePressed(resetSimulation);
-
-  // Create sliders for damping and stiffness
-  dampingSlider = p.createSlider(0, 1, damping, 0.01);
-  dampingSlider.parent('forward_euler');
-  dampingSlider.position(150, 10, 'relative');
-
-  stiffnessSlider = p.createSlider(0, 1, springStiffness, 0.01);
-  stiffnessSlider.parent('forward_euler');
-  stiffnessSlider.position(10, 10, 'relative');
-}
-function forwardEuler(acceleration) {
-// Forward Euler integration
-springPos.y += velocity;
-velocity += acceleration;
-}
-
-function backwardEuler(acceleration) {
-// Backward Euler integration
-velocity += acceleration;
-springPos.y += velocity;
 }
 
 p.draw = function()  {
   p.background(220);
-
-  // Update damping and stiffness based on sliders
-  damping = dampingSlider.value();
-  springStiffness = stiffnessSlider.value();
+  p.frameRate(30);
 
   // Display damping and stiffness values near sliders
   p.fill(0);
-  p.text("Damping: " + dampingSlider.value(), dampingSlider.x + dampingSlider.width + 10, dampingSlider.y + 15);
-  p.text("Stiffness: " + stiffnessSlider.value(), stiffnessSlider.x + stiffnessSlider.width + 10, stiffnessSlider.y + 15);
 
   // Calculate spring force
-  let displacement = springPos.y - p.height / 2;
-  let springForce = -springStiffness * displacement;
-
-  // Calculate damping force
-  dampingForce = -damping * velocity;
-
-  // Apply forces to the mass
   if (!isPaused) {
-    acceleration = (springForce + dampingForce) / mass;
-    springPos.y += velocity;
-    velocity += acceleration;
-
+    let displacement = getDisplacement();
+    forwardEuler(displacement);
+    // backwardEuler(displacement);
+    // symplecticEuler(displacement);
+    // Store energy in history
+    calculateTotalEnergy(displacement);
+    // Draw energy-time graph
   }
-
-  // Calculate kinetic and potential energy
-  kineticEnergy = 0.5 * mass * velocity ** 2;
-  potentialEnergy = 0.5 * springStiffness * displacement ** 2;
-
-  // Store energy in history
-  let totalEnergy = calculateTotalEnergy();
-  energyHistory.push(totalEnergy);
-  if (energyHistory.length > maxHistoryLength) {
-    energyHistory.shift(); // Remove oldest energy point
-  }
-
-  // Update min and max energy values
-  if (totalEnergy < minEnergy || minEnergy === undefined) {
-    minEnergy = totalEnergy;
-  }
-  if (totalEnergy > maxEnergy || maxEnergy === undefined) {
-    maxEnergy = totalEnergy;
-  }
-
-  // Draw energy-time graph
   drawEnergyGraph();
 
   // Draw spring
   p.stroke(0);
-  p.line(p.width / 2, 0, springPos.x, springPos.y);
+  p.line(p.width / 2, middlePoint, springPos.x, springPos.y);
 
   // Draw mass
   p.fill(255);
-  p.ellipse(springPos.x, springPos.y, mass, mass);
+  p.ellipse(springPos.x, springPos.y, 20, 20);
 
   // Draw ground
   p.fill(100);
@@ -129,14 +71,54 @@ p.draw = function()  {
   p.text("Full Energy: " + totalEnergy.toFixed(2), 10, 20);
   p.text("Spring Position: " + springPos.y.toFixed(2), 10, 40);
   p.text("Velocity: " + velocity.toFixed(2), 10, 60);
+  
 }
 
-function calculateTotalEnergy() {
+function getDisplacement() {
+  return springPos.y - middlePoint;
+}
+
+function forwardEuler(displacement) {
+let A = new math.matrix([[0., 1],[-(springFrequency**2),  - 2*damping*springFrequency]]);
+let p_v_prev = math.matrix([displacement, velocity]);
+let Sys = (math.add(eye,math.multiply(A,dt)));
+let p_v = math.multiply(Sys, p_v_prev);
+springPos.y = middlePoint + p_v.get([0]);
+velocity = p_v.get([1]);
+}
+function backwardEuler(displacement) {
+  let A = new math.matrix([[0., 1],[-(springFrequency**2),  - 2*damping*springFrequency]]);
+  let p_v_prev = math.matrix([displacement, velocity]);
+  let Sys = math.inv(math.subtract(eye,math.multiply(A,dt)));
+  let p_v = math.multiply(Sys, p_v_prev);
+  springPos.y = middlePoint + p_v.get([0]);
+  velocity = p_v.get([1]);
+}
+
+function symplecticEuler(displacement) {
+  let acceleration = -(springFrequency ** 2) * displacement - 2. * damping * springFrequency * velocity;
+  velocity += acceleration * dt;
+  springPos.y += velocity * dt;
+  
+}
+
+function calculateTotalEnergy(displacement) {
   // Calculate total energy
-  let displacement = springPos.y - p.height / 2;
-  kineticEnergy = 0.5 * mass * velocity ** 2;
-  potentialEnergy = 0.5 * springStiffness * displacement ** 2;
-  return kineticEnergy + potentialEnergy;
+  let kineticEnergy = 0.5 * 1. * velocity ** 2;
+  let potentialEnergy = 0.5 * springFrequency * displacement ** 2;
+
+  totalEnergy = kineticEnergy + potentialEnergy;
+  energyHistory.push(totalEnergy);
+  if (energyHistory.length > maxHistoryLength) {
+    energyHistory.shift(); // Remove oldest energy point
+  }
+  // Update min and max energy values
+  if (totalEnergy < minEnergy || minEnergy === undefined) {
+    minEnergy = totalEnergy;
+  }
+  if (totalEnergy > maxEnergy || maxEnergy === undefined) {
+    maxEnergy = totalEnergy;
+  }
 }
 
 function drawEnergyGraph() {
@@ -156,7 +138,7 @@ function pauseSimulation() {
 }
 
 function resetSimulation() {
-  springPos.y = height / 2;
+  springPos.y = p.height / 2;
   velocity = 10.; 
   acceleration = 0;
   energyHistory = [initialTotalEnergy]; // Reset with initial total energy
