@@ -9,8 +9,7 @@ layout: post
 
 <script src="{{site.baseurl}}/assets/scripts/p5.min.js"></script>
 <script src ="{{site.baseurl}}/assets/scripts/math.js"></script>
-<script src="{{site.baseurl}}/assets/scripts/numerical_method/forward_euler.js"></script>
-
+ <meta name="viewport" content="width=device-width, initial-scale=1">
 <div>
 В прошлой лекции мы попытались решить уравнения движения аналитически. Поскольку некоторые уравнения были не разрешимы, то мы их линеаризовывали. Однако многие эффекты терялись поскольку были нелинейными. 
 Поскольку аналитически решить все уравнения невозможно, то мы перейдем к численным методам.
@@ -142,12 +141,16 @@ layout: post
     z_k = F^k\cdot z_0\qquad
 \end{equation}
 
-<span id="forward_euler" class="rounded">
+<div class="mx-auto clear-both rounded overflow-hidden border " style="max-width: 500px;">
+<div class="text-center" id="forward_euler_cn_id">
+<figure>
+<canvas id="forward_euler_canvas_id"> </canvas>
+</figure>
 <script src="{{site.baseurl}}/assets/scripts/numerical_method/forward_euler.js"></script>
-<button type="button" class="btn btn-primary" data-bs-toggle="button">Toggle button</button>
-
-
-</span>
+</div>
+<button type="button" class="btn btn-sm" data-bs-toggle="button" id="forward_euler_stop_button_id">Stop</button>
+<button type="button" class="btn btn-sm" id="forward_euler_reset_button_id">Reset</button>
+</div>
 
 Как видно из симуляции энергия системы быстро увеличивается, что говорит о неустойчивости метода Эйлера.
 
@@ -220,9 +223,7 @@ layout: post
     z_k = B^k\cdot z_0\qquad (2)
 \end{equation}
 
-<span id="backward_euler" class= rounded style="max-width: 1152px;">
-<script src="{{site.baseurl}}/assets/scripts/numerical_method/backward_euler.js"></script>
-</span>
+
 
 Как видно из симуляции энергия
 </div>

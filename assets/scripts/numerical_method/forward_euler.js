@@ -1,4 +1,4 @@
-const forward_euler = p => {
+const forward = p => {
 
 let mass = 1;
 let springFrequency = 0.5*3.14;
@@ -18,28 +18,24 @@ let energyHistory = []; // Stores energy values over time
 const maxHistoryLength = 400; // Max number of energy points to store
 
 p.setup = function() {
-  const canvas = p.createCanvas(500, 300);
-  canvas.parent('forward_euler');
+  width = document.getElementById("forward_euler_cn_id").clientWidth;
+  console.log(width);
+  let canv = document.getElementById("forward_euler_canvas_id");
+  const canvas = p.createCanvas(width, 300, p.P2D, canv);
+
   springPos = p.createVector(p.width / 2, p.height / 2);
   middlePoint = springPos.y;  
 
-  // Create buttons
-  let pauseButton = p.createButton('Pause');
-  pauseButton.parent('forward_euler');
-  pauseButton.position(10, 10, 'relative');
-  pauseButton.mousePressed(pauseSimulation);
+  let pauseButton = document.getElementById('forward_euler_stop_button_id');
+  pauseButton.onclick = pauseSimulation;
 
-  let resetButton = p.createButton('Reset');
-  resetButton.parent('forward_euler');    
-  resetButton.position(70, 10, 'relative');
-  resetButton.mousePressed(resetSimulation);
+  let resetButton = document.getElementById('forward_euler_reset_button_id');
+  resetButton.onclick = resetSimulation;
 }
 
 p.draw = function()  {
   p.background(220);
   p.frameRate(30);
-
-  // Display damping and stiffness values near sliders
   p.fill(0);
 
   // Calculate spring force
@@ -50,7 +46,7 @@ p.draw = function()  {
     // symplecticEuler(displacement);
     // Store energy in history
     calculateTotalEnergy(displacement);
-    // Draw energy-time graph
+
   }
   drawEnergyGraph();
 
@@ -124,7 +120,7 @@ function calculateTotalEnergy(displacement) {
 function drawEnergyGraph() {
   p.noFill();
   p.beginShape();
-  p.stroke(255, 0, 0); // Red color for energy graph
+  p.stroke(255, 0, 0); 
   for (let i = 0; i < energyHistory.length; i++) {
     let x = p.map(i, 0, energyHistory.length - 1, 0, p.width);
     let y = p.map(energyHistory[i], minEnergy, maxEnergy, p.height, 0); // Scale the energy graph
@@ -141,11 +137,10 @@ function resetSimulation() {
   springPos.y = p.height / 2;
   velocity = 10.; 
   acceleration = 0;
-  energyHistory = [initialTotalEnergy]; // Reset with initial total energy
+  energyHistory = [initialTotalEnergy];
   minEnergy = undefined;
   maxEnergy = undefined;
-  isPaused = false;
 }
 };
 
-new p5(forward_euler);
+new p5(forward);
