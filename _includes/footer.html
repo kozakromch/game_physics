@@ -9,6 +9,7 @@
 <script src="{{site.baseurl}}/assets/gitbook/gitbook-plugin-search-pro/search.js"></script>
 <script src="{{site.baseurl}}/assets/gitbook/gitbook-plugin-sharing/buttons.js"></script>
 <script src="{{site.baseurl}}/assets/gitbook/gitbook-plugin-splitter/splitter.js"></script>
+<script src="{{site.baseurl}}/assets/bootstrap-5.3.3-dist/js/bootstrap.js"></script>
 
 <!--
 <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
@@ -16,17 +17,6 @@
 <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
 <script src="../gitbook/gitbook-plugin-search/search.js"></script>
 -->
-
-{% if site.extra_footer_js %}
-    {%- for extra_js in site.extra_header_js -%}
-        {%- assign starts_with = extra_js | slice: 0,4  -%}
-        {% if starts_with == "http" %}
-<script src="{{ extra_js }}"></script>
-        {%- else -%}
-<script src="{{site.baseurl}}/{{ extra_js }}"></script>
-        {%- endif -%}
-    {%- endfor -%}
-{% endif %}
 
 {%- if site.tracker -%}
     <!-- trackers -->
