@@ -1,4 +1,4 @@
-class Spring {
+class SpringSinusoidal {
     constructor(numPoints, amplitude, frequency) {
         this.numPoints = numPoints;
         this.amplitude = amplitude;

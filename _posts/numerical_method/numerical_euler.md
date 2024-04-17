@@ -85,11 +85,11 @@
     z_k = F^k\cdot z_0\qquad
 \end{equation}
 
-<div class="mx-auto clear-both rounded overflow-hidden border" style="max-width: 500px;" id="forward_euler_cn_id">
+<div class="mx-auto clear-both rounded overflow-hidden border" style="max-width: 500px;" id="forward_euler_base_id">
 <canvas id="forward_euler_canvas_id"> </canvas>
-<script src="{{site.baseurl}}/assets/scripts/numerical_method/forward_euler.js" args="forward_argument"></script>
-<button type="button" class="btn btn-sm" data-bs-toggle="button" id="forward_euler_stop_button_id">Stop</button>
+<button type="button" class="btn btn-sm" id="forward_euler_stop_button_id">Stop</button>
 <button type="button" class="btn btn-sm" id="forward_euler_reset_button_id">Reset</button>
+<script src="{{site.baseurl}}/assets/scripts/numerical_method/spring.js" id="testytest" args="HELLOOOO"></script>
 </div>
 
 Как видно из симуляции энергия системы быстро увеличивается, что говорит о неустойчивости метода Эйлера.
