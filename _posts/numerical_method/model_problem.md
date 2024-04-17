@@ -55,7 +55,7 @@
 
 </div>
 
-### Пружинка с дэмпингом
+### Пружинка
 
 <div>
 
@@ -92,4 +92,6 @@
 \begin{equation}
     x(t) = (A\cos(\omega t) + B\sin(\omega t)),
 \end{equation}
+
+{% include /templates/include_sketch.html script_path="/assets/scripts/numerical_method/analitical_spring.js" base_name="analitical_spring" %}
 
