@@ -11,7 +11,7 @@ export class Energy {
         this.energy_history = [];
     }
     storeEnergy(energy) {
-        this.energy_history.push(energy);
+        this.energy_history.push(math.round(energy));
         if (this.energy_history.length > this.max_history_length) {
             this.energy_history.shift(); // Remove oldest energy point
         }
@@ -27,7 +27,7 @@ export class Energy {
 export function drawEnergyGraph(p5, energy) {
     p5.noFill();
     p5.beginShape();
-    p5.stroke(255, 0, 0);
+    p5.stroke(150, 0, 0);
     let min_energy = energy.min_energy;
     let max_energy = energy.max_energy;
     let energy_history = energy.energy_history;

@@ -14,8 +14,8 @@ class SpringInterfaceAnalitical {
         p5.background(220);
 
         this.spring_system.calcSystem();
-        this.spring_vis.draw(p5, this.spring_system);
         drawEnergyGraph(p5, this.spring_system.energy);
+        this.spring_vis.draw(p5, this.spring_system, 0, 255, 0, 255);
 
         // Draw ground
         p5.fill(100);

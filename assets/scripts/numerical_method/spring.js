@@ -90,17 +90,53 @@ export class SpringSystem {
 
 };
 
+class SpringSinusoidal {
+    constructor(numPoints, amplitude, frequency) {
+        this.numPoints = numPoints;
+        this.amplitude = amplitude;
+        this.frequency = frequency;
+    }
+
+    draw(p5, startX, startY, endX, endY, opacity = 255) {
+        // Calculate the length of the spring
+        let length = p5.dist(startX, startY, endX, endY);
+
+        // Calculate the angle between the start and end points
+        let angle = p5.atan2(endY - startY, endX - startX);
+
+        // Draw the spring as a sinusoidal line
+        p5.noFill();
+        p5.beginShape();
+        p5.stroke(0, 0, 0, opacity);
+        for (let i = 0; i <= this.numPoints; i++) {
+            // Calculate the interpolation factor along the spring
+            let t = i / this.numPoints;
+
+            // Calculate the x-coordinate of the current point on the spring
+            let y = startY + p5.sin(angle) * (length * t);
+
+            // Calculate the y-coordinate of the current point on the spring
+            let x = startX + p5.cos(angle) * (length * t) + this.amplitude * p5.sin(this.frequency * p5.TWO_PI * t);
+
+            // Draw the current point
+            p5.vertex(x, y);
+        }
+        p5.endShape();
+    }
+}
+
 export class SpringVis {
-    constructor() { }
-    draw(p5, spring_system) {
+    constructor() {
+        this.spring_sinusoidal = new SpringSinusoidal(100, 5, 8);
+    }
+    draw(p5, spring_system, r, g, b, o) {
         let spring_pos_x = p5.width / 2;
         let start_point = p5.height / 2;
         let spring_pos_y = start_point + spring_system.x;
         // Draw spring
-        p5.stroke(0);
-        p5.line(p5.width / 2, start_point, spring_pos_x, spring_pos_y);
+        this.spring_sinusoidal.draw(p5, spring_pos_x, start_point, spring_pos_x, spring_pos_y, o * 0.8);
         // Draw mass
-        p5.fill(255);
+        p5.fill(r, g, b, o);
         p5.ellipse(spring_pos_x, spring_pos_y, 20, 20);
     }
 };
