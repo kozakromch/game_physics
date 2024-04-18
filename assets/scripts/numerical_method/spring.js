@@ -1,7 +1,5 @@
-import { Energy, drawEnergyGraph } from '../common/energy.js';
-import { BaseVis } from '../common/base_vis.js';
-
-class Parameters {
+var spring_namespace = spring_namespace || {};
+spring_namespace.Parameters = class {
     constructor() {
         this.m = 1.;
         this.k = 1.;
@@ -10,11 +8,11 @@ class Parameters {
         this.dt = 0.1;
     }
 };
-export class SpringSystem {
+spring_namespace.SpringSystem = class {
     constructor(method) {
         this.method = method;
-        this.parameters = new Parameters();
-        this.energy = new Energy();
+        this.parameters = new spring_namespace.Parameters();
+        this.energy = new energy_namespace.Energy();
         this.initialyzeSystem();
     }
     reset() {
@@ -90,7 +88,7 @@ export class SpringSystem {
 
 };
 
-class SpringSinusoidal {
+spring_namespace.SpringSinusoidal = class {
     constructor(numPoints, amplitude, frequency) {
         this.numPoints = numPoints;
         this.amplitude = amplitude;
@@ -125,9 +123,9 @@ class SpringSinusoidal {
     }
 }
 
-export class SpringVis {
+spring_namespace.SpringVis = class {
     constructor() {
-        this.spring_sinusoidal = new SpringSinusoidal(100, 5, 8);
+        this.spring_sinusoidal = new spring_namespace.SpringSinusoidal(100, 5, 8);
     }
     draw(p5, spring_system, r, g, b, o) {
         let spring_pos_x = p5.width / 2;

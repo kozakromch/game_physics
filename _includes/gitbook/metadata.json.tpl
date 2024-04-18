@@ -25,7 +25,7 @@
             },
             "search": {},
 
-            {%- include gitbook-sharing.json.tpl -%}
+            {%- include gitbook/gitbook-sharing.json.tpl -%}
 
             "theme-default": {
                 "showLevel": false,

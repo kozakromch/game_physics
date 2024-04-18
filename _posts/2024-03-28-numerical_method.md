@@ -8,13 +8,10 @@ layout: post
 
 <script src = "{{site.baseurl}}/assets/scripts/p5.min.js"></script>
 <script src = "{{site.baseurl}}/assets/scripts/math.js"></script>
-<script type = "module" src = "{{site.baseurl}}/assets/scripts/common/base_vis.js"> </script>
-<script type = "module" src = "{{site.baseurl}}/assets/scripts/common/energy.js"></script>
-<script type = "module" src = "{{site.baseurl}}/assets/scripts/common/main_vis.js"></script>
-<script type = "module" src = "{{site.baseurl}}/assets/scripts/numerical_method/spring.js"></script>
-
- <meta name="viewport" content="width=device-width, initial-scale=1">
-<div>
+<script src = "{{site.baseurl}}/assets/scripts/common/base_vis.js"> </script>
+<script src = "{{site.baseurl}}/assets/scripts/common/energy.js"></script>
+<script src = "{{site.baseurl}}/assets/scripts/common/main_vis.js"></script>
+<script src = "{{site.baseurl}}/assets/scripts/numerical_method/spring.js"></script>
 
 {% include_relative numerical_method/intro.md %}
 

@@ -1,4 +1,5 @@
-export class BaseVis {
+var base_canvas_namespace = base_canvas_namespace || {};
+base_canvas_namespace.BaseCanvasController = class {
     constructor(base_name) {
         this.is_paused = true;
         this.is_reset = true;

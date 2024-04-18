@@ -1,0 +1,37 @@
+<script>
+window.MathJax = {
+  loader: {
+    load: ['ui/lazy']
+  },
+  startup: {
+    ready() {
+
+      MathJax.startup.extendHandler(handler => {
+        handler.documentClass = class extends handler.documentClass {
+          constructor(...args) {
+            super(...args);
+            this.lazyObserver = new IntersectionObserver(this.lazyObserve.bind(this), {
+              rootMargin: '50% 0px'
+            });
+          }
+        };
+        return handler;
+      }, 100);
+      MathJax.startup.defaultReady();
+    }
+  },
+  tex: {
+    inlineMath: [ ['$', '$'], ['\\(', '\\)'] ]
+  },
+  svg: {
+    fontCache: 'global'
+  },
+  hub: {
+    processSectionDelay: 0
+  },
+};
+</script>
+<script
+  type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>

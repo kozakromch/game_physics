@@ -1,9 +1,9 @@
-import { BaseVis } from './base_vis.js';
+var main_visualizator_namespace = main_visualizator_namespace || {};
 
-export function getMainVisualizator(spring_interface) {
+main_visualizator_namespace.getMainVisualizator = function (spring_interface) {
     var context = spring_interface
     let MainVisualizator = function (p5) {
-        let base_vis = new BaseVis(context.base_name);
+        let base_vis = new base_canvas_namespace.BaseCanvasController(context.base_name);
 
         p5.setup = function () {
             p5.createCanvas(base_vis.width, base_vis.height, p5.P2D, base_vis.canvas);

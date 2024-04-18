@@ -3,7 +3,8 @@
 
 <script src="{{site.baseurl}}/assets/gitbook/gitbook-plugin-back-to-top-button/plugin.js"></script>
 <script src="{{site.baseurl}}/assets/gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
-<script src="{{site.baseurl}}/assets/gitbook/gitbook-plugin-expandable-chapters-small2/expandable-chapters-small.js"></script>
+<script
+    src="{{site.baseurl}}/assets/gitbook/gitbook-plugin-expandable-chapters-small2/expandable-chapters-small.js"></script>
 <script src="{{site.baseurl}}/assets/gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
 <script src="{{site.baseurl}}/assets/gitbook/gitbook-plugin-search-pro/jquery.mark.min.js"></script>
 <script src="{{site.baseurl}}/assets/gitbook/gitbook-plugin-search-pro/search.js"></script>
@@ -19,13 +20,13 @@
 -->
 
 {%- if site.tracker -%}
-    <!-- trackers -->
-    {%- if site.tracker.google_analytics -%}
-        <!-- google analytics -->
-        {%- include google-analytics.html -%}
-    {%- endif -%}
-    {%- if site.tracker.cnzz -%}
-        <!-- cnzz -->
-        {%- include cnzz.html -%}
-    {%- endif -%}
+<!-- trackers -->
+{%- if site.tracker.google_analytics -%}
+<!-- google analytics -->
+{%- include gitbook/google-analytics.html -%}
+{%- endif -%}
+{%- if site.tracker.cnzz -%}
+<!-- cnzz -->
+{%- include gitbook/cnzz.html -%}
+{%- endif -%}
 {%- endif -%}

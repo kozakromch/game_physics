@@ -1,4 +1,5 @@
-export class Energy {
+var energy_namespace = energy_namespace || {};
+energy_namespace.Energy = class {
     constructor() {
         this.min_energy = undefined;
         this.max_energy = undefined;
@@ -24,7 +25,7 @@ export class Energy {
         }
     }
 }
-export function drawEnergyGraph(p5, energy) {
+function drawEnergyGraph(p5, energy) {
     p5.noFill();
     p5.beginShape();
     p5.stroke(150, 0, 0);
