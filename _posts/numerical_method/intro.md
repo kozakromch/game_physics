@@ -12,7 +12,7 @@
 
 {% include /templates/image.html path='/numerical_method/phase_trajectory.excalidraw.svg' %}
 
-{%include /templates/collapse.html summary="**Формальности" 
+{%include /templates/collapse.html summary="Формальности" 
 content="
 
 Если говорить чуть формальнее то у нас было уравнение вида

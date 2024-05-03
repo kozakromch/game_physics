@@ -13,27 +13,35 @@
 <div>
 {% include /templates/image.html path='/numerical_method/canon.excalidraw.svg' %}
 
-Тело массой $m$ вылетает из пушки с начальной скоростью $v_0$ под углом $\alpha$ к горизонту. Тогда уравнение движения примет вид
+Тело массой $m$ вылетает из пушки с начальной скоростью $v_0$ под углом $\alpha$ к горизонту.
+{%include /templates/collapse.html summary="Формальности" 
+content="
+Тогда уравнение движения примет вид
 \begin{equation}
     \begin{split}
-        \ddot{x} = 0,\\
-        \ddot{y} = -g,
+        &\ddot{x} = 0,\\
+        &\ddot{y} = -g,
     \end{split}
 \end{equation}
 где $g$ - ускорение свободного падения. Перепишем уравнение в виде
 \begin{equation}
     \begin{split}
-        \dot{x} = v_x,\\
-        \dot{v_x} = 0,\\
-        \dot{y} = v_y,\\
-        \dot{v_y} = -g.
+        &\dot{x} = v_x,\\
+        &\dot{v_x} = 0,\\
+        &\dot{y} = v_y,\\
+        &\dot{v_y} = -g.
     \end{split}
 \end{equation}
-Аналогично
+Если ввести вектор состояния $z$:
 \begin{equation}
     z =
      \begin{bmatrix}     x \\     v_x \\     y \\     v_y \\     \end{bmatrix}
 \end{equation}
+и константный вектор $G$:
+\begin{equation}
+    G = \begin{bmatrix} 0 \\ 0 \\ 0\\ -g \end{bmatrix}
+\end{equation}
+
 Тогда уравнение перепишем в виде
 \begin{equation}
     \dot{z} =
@@ -43,34 +51,42 @@
         0 & 0 & 0 & 1 \\
         0 & 0 & 0 & 0 \\
     \end{bmatrix}
-    \cdot z = A \cdot z
+    \cdot z  + \begin{bmatrix} 0 \\ 0 \\ 0\\ -g \end{bmatrix} = A \cdot z + G
 \end{equation}
 
-И аналитическое решение для этой задачи известно
+"%}
+</div>
+<div>
+Аналитическое решение этой задачи -- обычная баллистическая кривая.
 \begin{equation}
     \begin{split}
-        &x(t) = v_0 t \cos(\alpha),\\
+        &x(t) = v_0 t \cos(\alpha) \\ 
         &y(t) = v_0 t \sin(\alpha) - \frac{1}{2}gt^2.
     \end{split}
 \end{equation}
 
+{% include /templates/include_sketch.html path="numerical_method/analitical_canon.js" base_name="analitical_canon" %}
 </div>
 
 ### Пружинка
 
 <div>
 
-Пусть у нас есть пружинка с коэффициентом жесткости $k$, массой $m$ и начальным смещением $x_0$
+Пружинка с коэффициентом жесткости $k$, массой $m$ и начальным смещением $x_0$  и начальной скоростью $v_0$.
+
+{% include /templates/image.html path='/numerical_method/spring.excalidraw.svg' %}
+{%include /templates/collapse.html summary="Формальности"
+content="
 \begin{equation}
     \begin{split}
-        \ddot{x} = -\frac{k}{m}x,\\
+        &\ddot{x} = -\frac{k}{m}x,\\
     \end{split}
 \end{equation}
 Тогда уравнение движения примет вид
 \begin{equation}
     \begin{split}
-        \dot{x} = v,\\
-        \dot{v} = -\frac{k}{m}x.
+        &\dot{x} = v,\\
+        &\dot{v} = -\frac{k}{m}x.
     \end{split}
 \end{equation}
 Аналогично
@@ -87,12 +103,12 @@
     \end{bmatrix}
     \cdot z = A \cdot z
 \end{equation}
+"%}
 
-
-И аналитическое решение для этой задачи известно
+Аналитическое решение для этой задачи -- гармонические колебания.
 \begin{equation}
-    x(t) = (A\cos(\omega t) + B\sin(\omega t)),
+    x(t) = (x_0\cos(\omega t) + v_0\sin(\omega t)),
 \end{equation}
-
+</div>
 {% include /templates/include_sketch.html path="numerical_method/analitical_spring.js" base_name="analitical_spring" %}
 

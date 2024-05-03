@@ -5,12 +5,57 @@
 ### Прямой метод Эйлера
 
 <div>
-Самый простой метод, который можно придумать для численного интегрирования можно получить вот так
-Воспользуемся следующим приближением:
+Самый простой метод, который можно придумать для численного интегрирования можно получить,
+если заменить в определении производной $\approx$ на $=$
 \begin{equation}
     \dot{x} = \frac{dx}{dt} = \lim_{\Delta t\rightarrow 0} \frac{x(t + \Delta t) -x(t)}{\Delta t} \approx \frac{x(t + \Delta t) -x(t)}{\Delta t},
 \end{equation}
-Если заменить $\approx$ на $=$, пронумеровать положения в узлах и подставить в начальное уравнение, то получится
+
+\begin{equation}
+x(t + \Delta t) = x(t) + \dot{x}(t)\Delta t
+\end{equation}
+Или в дискретной форме
+\begin{equation}
+x_{k+1} = x_k + \dot{x_k}\Delta t
+\end{equation}
+
+Пока забъем на анализ устойчивости и точности, просто попробуем просимулировать решения модельных задач.
+
+{% include /templates/collapse.html summary="Формальности"
+content="
+Решение задачи стрельбы из пушки с помощью прямого Эйлера
+\begin{equation} 
+ \dot{z} = A \cdot z + G
+\end{equation}
+
+Подставляя это в метод прямого Эйлера получим
+\begin{equation}
+    z_{k+1} = z_k + A\cdot z_k\cdot\Delta t + G\cdot\Delta t = (I + A\cdot\Delta t)\cdot z_k + G\cdot\Delta t = F\cdot z_k + G\cdot\Delta t
+\end{equation}
+
+"%}
+{% include /templates/include_sketch.html path="numerical_method/forward_euler_canon.js" base_name="forward_euler_canon" %}
+
+В принципе неплохо. Немного растет энергия, но симуляция достаточно короткая, чтобы это было заметно. 
+
+{% include /templates/collapse.html summary="Формальности"
+content="
+Решение задачи пружинки с помощью прямого Эйлера
+\begin{equation} 
+ \dot{z} = A \cdot z
+\end{equation}
+
+Подставляя это в метод прямого Эйлера получим
+\begin{equation}
+    z_{k+1} = z_k + A\cdot z_k\cdot\Delta t = (I + A\cdot\Delta t)\cdot z_k = F\cdot z_k\qquad
+\end{equation}
+"%}
+
+{% include /templates/include_sketch.html path="numerical_method/forward_euler_spring.js" base_name="forward_euler_spring" %}
+
+А вот здесь уже возрастание энергии не такое приятное. И проблема решается лишь частично уменьшением шага по времени. 
+Те энергия растет, но медленнее. 
+
 \begin{equation}
     \begin{split}
         &\dot{x_k} = \frac{x_{k+1} -x_k}{\Delta t} = f(x_k),\\
@@ -74,18 +119,7 @@ y*{k+1} = (1 - \Delta t \cdot \lambda)^{-1}\cdot y_k
 #### Пример
 
 <div>
-Попробуем решить уравнение движения пружинки с помощью явного метода Эйлера.
-Подставляя на место $\dot{z}$ обсужденное выше приближенное значение, получим следующие равенства для явной$(1)$ схемы:
-\begin{equation}
-    z_{k+1} = (I + A\cdot\Delta t)\cdot z_k = F\cdot z_k\qquad
-\end{equation}
-По индукции, получим
-\begin{equation}
-    z_k = F^k\cdot z_0\qquad
-\end{equation}
 
-{% include /templates/include_sketch.html path="numerical_method/forward_euler_spring.js" base_name="forward_euler_spring" %}
-Как видно из симуляции энергия системы быстро увеличивается, что говорит о неустойчивости метода Эйлера.
 
 Подставляя на место $\dot{z}$ обсужденное выше приближенное значение, получим следующие равенствo для неявной$(2)$ схем:
 \begin{equation}
