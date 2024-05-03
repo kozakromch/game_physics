@@ -13,6 +13,8 @@ layout: post
 <script src = "{{site.baseurl}}/assets/scripts/common/main_vis.js"></script>
 <script src = "{{site.baseurl}}/assets/scripts/numerical_method/spring.js"></script>
 
+
+
 {% include_relative numerical_method/intro.md %}
 
 {% include_relative numerical_method/model_problem.md %}
@@ -24,5 +26,5 @@ layout: post
 {% include_relative numerical_method/RK.md %}
 
 {% include_relative numerical_method/summary.md %}
-</div>
+
 

@@ -3,6 +3,7 @@
 ## Методы Эйлера
 
 ### Прямой метод Эйлера
+
 <div>
 Самый простой метод, который можно придумать для численного интегрирования можно получить вот так
 Воспользуемся следующим приближением:
@@ -47,28 +48,26 @@
 <div>
 \input{pics/stable_zone_fwd.tex}
 
-
 Для явного метода, переходя к собственным векторам, получим
 \begin{equation}
-    y_{k+1} = (1 + \Delta t \cdot \lambda)\cdot y_k
+y\_{k+1} = (1 + \Delta t \cdot \lambda)\cdot y_k
 \end{equation}
 Для устойчивости решения необходимо
 \begin{equation}
-    |1 + \Delta t \cdot \lambda| < 1
+|1 + \Delta t \cdot \lambda| < 1
 \end{equation}
 Заметим, что меньшие значения $\lambda$ и $\Delta t$ имеют больший шанс попадания в зону стабильности.
 
-\input{pics/stable_zone_bwd.tex}
+\input{pics/stable*zone_bwd.tex}
 Для неявного метода, переходя к собственным векторам, получим
 \begin{equation}
-    y_{k+1} = (1 - \Delta t \cdot \lambda)^{-1}\cdot y_k
+y*{k+1} = (1 - \Delta t \cdot \lambda)^{-1}\cdot y_k
 \end{equation}
 Для устойчивости решения необходимо
 \begin{equation}
-    |(1 - \Delta t \cdot \lambda)^{-1}| < 1 \Leftrightarrow |1 - \Delta t \cdot \lambda| > 1
+|(1 - \Delta t \cdot \lambda)^{-1}| < 1 \Leftrightarrow |1 - \Delta t \cdot \lambda| > 1
 \end{equation}
 Сразу можно заметить, что зона устойчивости для неявного метода больше, чем у явного; однако при некоторых собственных значениях уменьшение временного шага ухудшает стабильность,\\чего для явного метода не наблюдалось.
-
 
 </div>
 
@@ -85,18 +84,16 @@
     z_k = F^k\cdot z_0\qquad
 \end{equation}
 
-{% include /templates/include_sketch.html script_path="/assets/scripts/numerical_method/forward_euler_spring.js" base_name="forward_euler_spring" %}
+{% include /templates/include_sketch.html path="numerical_method/forward_euler_spring.js" base_name="forward_euler_spring" %}
 Как видно из симуляции энергия системы быстро увеличивается, что говорит о неустойчивости метода Эйлера.
-
-
 
 Подставляя на место $\dot{z}$ обсужденное выше приближенное значение, получим следующие равенствo для неявной$(2)$ схем:
 \begin{equation}
-    z_{k+1} = (I - A\cdot\Delta t)^{-1}\cdot z_k = B\cdot z_k\qquad (2)
+z\_{k+1} = (I - A\cdot\Delta t)^{-1}\cdot z_k = B\cdot z_k\qquad (2)
 \end{equation}
 По индукции, получим
 \begin{equation}
-    z_k = B^k\cdot z_0\qquad (2)
+z_k = B^k\cdot z_0\qquad (2)
 \end{equation}
 
 </div>
@@ -107,16 +104,15 @@
 
 Посмотрим на ошибку метода Эйлера. Пусть у нас есть точное решение $x(t)$ и приближенное $x_k$. Тогда
 \begin{equation}
-    x(t + \Delta t) = x(t) + \dot{x}(t)\Delta t + \frac{\ddot{x}(t)\Delta t^2}{2} + \ldots
+x(t + \Delta t) = x(t) + \dot{x}(t)\Delta t + \frac{\ddot{x}(t)\Delta t^2}{2} + \ldots
 \end{equation}
 \begin{equation}
-    x_{k+1} = x_k + \dot{x_k}\Delta t
+x*{k+1} = x_k + \dot{x_k}\Delta t
 \end{equation}
 Тогда
 \begin{equation}
-    x(t + \Delta t) - x_{k+1} = \frac{\ddot{x}(t)\Delta t^2}{2} + \ldots
+x(t + \Delta t) - x*{k+1} = \frac{\ddot{x}(t)\Delta t^2}{2} + \ldots
 \end{equation}
 Таким образом, локальная ошибка метода Эйлера пропорциональна квадрату шага по времени.
-Глобальная ошибка же пропорциональна числу шагов по времени умноженному на локальную ошибку. 
+Глобальная ошибка же пропорциональна числу шагов по времени умноженному на локальную ошибку.
 Таким образом, ошибка метода Эйлера пропорциональна шагу по времени.
-

@@ -18,7 +18,7 @@ main_visualizator_namespace.getMainVisualizator = function (spring_interface) {
             if (base_vis.is_reset) {
                 context.reset();
                 base_vis.is_reset = false;
-
+                context.iter(p5);
             }
         }
     };

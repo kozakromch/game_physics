@@ -1,16 +1,17 @@
 
-</div>
 
 ## Модельные задача
 
 <div>
-Для того чтобы анализировать численные методы возьмем простые задачи, которые достаточно часто встречаются в играх и для которых известно аналитическое решение. Для того чтобы решить систему численно, нужно переписать уравнение в виде системы уравнений первого порядка.
+Для того чтобы анализировать численные методы возьмем простые задачи, 
+которые достаточно часто встречаются в играх и для которых известно аналитическое решение. Для того чтобы решить систему численно, нужно переписать уравнение в виде системы уравнений первого порядка.
 
 </div>
 
 ### Стрельба из пушки
 
 <div>
+{% include /templates/image.html path='/numerical_method/canon.excalidraw.svg' %}
 
 Тело массой $m$ вылетает из пушки с начальной скоростью $v_0$ под углом $\alpha$ к горизонту. Тогда уравнение движения примет вид
 \begin{equation}
@@ -93,5 +94,5 @@
     x(t) = (A\cos(\omega t) + B\sin(\omega t)),
 \end{equation}
 
-{% include /templates/include_sketch.html script_path="/assets/scripts/numerical_method/analitical_spring.js" base_name="analitical_spring" %}
+{% include /templates/include_sketch.html path="numerical_method/analitical_spring.js" base_name="analitical_spring" %}
 
