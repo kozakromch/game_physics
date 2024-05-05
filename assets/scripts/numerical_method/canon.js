@@ -60,16 +60,17 @@ canon_namespace.CanonSystem = class {
     this.y = p_v.get([2]);
     this.vy = p_v.get([3]);
   }
+  //   z_{k} = F^{-1}\cdot(z_{k-1} + G\cdot\Delta t)
   backwardEuler() {
     const eye =
         math.matrix([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]);
-    const g = this.parameters.g;
+    const G = math.multiply(
+        math.matrix([0, 0, 0, -this.parameters.g]), this.parameters.dt);
     let A = new math.matrix(
         [[0., 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 1], [0, 0, 0, 0]]);
     let p_v_prev = math.matrix([this.x, this.vx, this.y, this.vy]);
-    let Sys =
-        math.inv(math.subtract(eye, math.multiply(A, this.parameters.dt)));
-    let p_v = math.multiply(Sys, p_v_prev);
+    let Sys = math.subtract(eye, math.multiply(A, this.parameters.dt));
+    let p_v = math.multiply(math.inv(Sys), math.add(p_v_prev, G));
     this.x = p_v.get([0]);
     this.vx = p_v.get([1]);
     this.y = p_v.get([2]);
@@ -125,5 +126,44 @@ canon_namespace.CanonVis = class {
           canon_system.history[i][0], p5.height - canon_system.history[i][1]);
     }
     p5.endShape();
+  }
+};
+
+
+canon_namespace.CanonInterfaceEuler = class {
+  constructor(method) {
+    this.base_name = method + '_euler_canon';
+    this.canon_system_euler =
+        new canon_namespace.CanonSystem(method + '_euler');
+    this.canon_vis_euler = new canon_namespace.CanonVis();
+    this.canon_system_an = new canon_namespace.CanonSystem('analitical');
+    this.canon_vis_an = new canon_namespace.CanonVis();
+  }
+  iter(p5) {
+    p5.frameRate(30);
+    p5.background(220);
+
+
+    this.canon_system_an.calcSystem();
+    this.canon_system_euler.calcSystem();
+
+    drawEnergyGraph(p5, this.canon_system_euler.energy);
+
+    this.canon_vis_an.draw(p5, this.canon_system_an, 0, 255, 0, 100);
+    this.canon_vis_euler.draw(p5, this.canon_system_euler, 255, 0, 0, 255);
+
+    // Draw ground
+    p5.st
+    p5.fill(100);
+    p5.rect(0, p5.height - 10, p5.width, 10);
+
+    // Draw info
+    p5.fill(0);
+    p5.stroke(0);
+    p5.text('Full Energy: ' + this.canon_system_euler.E.toFixed(2), 10, 20);
+  }
+  reset() {
+    this.canon_system_euler.reset();
+    this.canon_system_an.reset();
   }
 };
