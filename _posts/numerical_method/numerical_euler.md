@@ -175,12 +175,11 @@ content="
 "%}
 
 {% include /templates/include_sketch.html path="numerical_method/backward_euler_canon.js" base_name="backward_euler_canon" %}
-
-
+Ситуация с энергией в обратном Эйлере обратная. Она убывает. И на баллистической кривой это нормально.
 
 
 {% include /templates/include_sketch.html path="numerical_method/backward_euler_spring.js" base_name="backward_euler_spring" %}
-
+А вот здесь получается демпфированная пружинка. Из плюсов такой численной схемы. Пружинка безусловно устойчива.
 
 
 
@@ -189,6 +188,7 @@ content="
 #### Анализ устойчивости
 
 <div>
+Да и вообще у неявного Эйлера очень большая зона устойчивости. 
 
 
 \input{pics/stable*zone_bwd.tex}
@@ -200,7 +200,10 @@ y*{k+1} = (1 - \Delta t \cdot \lambda)^{-1}\cdot y_k
 \begin{equation}
 |(1 - \Delta t \cdot \lambda)^{-1}| < 1 \Leftrightarrow |1 - \Delta t \cdot \lambda| > 1
 \end{equation}
-Сразу можно заметить, что зона устойчивости для неявного метода больше, чем у явного; однако при некоторых собственных значениях уменьшение временного шага ухудшает стабильность,\\чего для явного метода не наблюдалось.
+Сразу можно заметить, что зона устойчивости для неявного метода больше
+
+
+{% include /templates/image.html path="numerical_method/stable_zone_backward.excalidraw.svg" %}
 
 </div>
 
