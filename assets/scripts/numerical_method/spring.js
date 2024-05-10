@@ -13,6 +13,7 @@ spring_namespace.SpringSystem = class {
     this.method = method;
     this.parameters = new spring_namespace.Parameters();
     this.energy = new energy_namespace.Energy();
+    this.max_history = 100;
     this.initialyzeSystem();
   }
   reset() {
@@ -20,12 +21,18 @@ spring_namespace.SpringSystem = class {
     this.energy.reset();
   }
   initialyzeSystem() {
+    this.history = [];
     this.x = this.parameters.x_0;
     this.v = this.parameters.v_0;
     this.t = 0.;
     this.calcEnergy();
   }
   calcSystem() {
+    this.history.push([this.x, this.v]);
+    if (this.history.length > this.max_history) {
+      this.history.shift();
+    }
+
     this.t += this.parameters.dt;
     if (this.method == 'forward_euler') {
       this.forwardEuler();
@@ -128,15 +135,16 @@ spring_namespace.SpringVis = class {
   constructor() {
     this.spring_sinusoidal = new spring_namespace.SpringSinusoidal(100, 5, 8);
   }
-  draw(p5, spring_system, r, g, b, o) {
+  draw(p5, spring_system, color, alpha) {
     let spring_pos_x = p5.width / 2;
     let start_point = p5.height / 2;
     let spring_pos_y = start_point + spring_system.x;
     // Draw spring
     this.spring_sinusoidal.draw(
-        p5, spring_pos_x, start_point, spring_pos_x, spring_pos_y, o * 0.8);
+        p5, spring_pos_x, start_point, spring_pos_x, spring_pos_y, alpha);
     // Draw mass
-    p5.fill(r, g, b, o);
+    p5.stroke(0, color.alpha);
+    p5.fill(color);
     p5.ellipse(spring_pos_x, spring_pos_y, 20, 20);
   }
 };
@@ -156,8 +164,8 @@ spring_namespace.SpringInterfaceEuler = class {
 
     drawEnergyGraph(p5, this.system_euler.energy);
 
-    this.vis_an.draw(p5, this.system_an, 0, 255, 0, 100);
-    this.vis_euler.draw(p5, this.system_euler, 255, 0, 0, 255);
+    this.vis_an.draw(p5, this.system_an, color_scheme.GREEN_ALPHA(p5), 50);
+    this.vis_euler.draw(p5, this.system_euler, color_scheme.RED(p5), 255);
 
     // Draw info
     p5.fill(0);
@@ -171,68 +179,115 @@ spring_namespace.SpringInterfaceEuler = class {
 };
 
 
-spring_namespace.SpringPhaseSpace = class {
+spring_namespace.SpringPhaseSpaceBase = class {
   constructor(method) {
     this.base_name = method + '_phase_spring';
-
-    this.systems_an = this.getSystems('analitical');
-    this.systems_eu = this.getSystems(method + '_euler');
     this.scale = 20;
   }
   getSystems(name) {
     let systems = [];
     for (let i = 0; i < 4; i++) {
-      systems.push(new canon_namespace.CanonSystem(name));
+      systems.push(new spring_namespace.SpringSystem(name));
     }
-    let x_0 = 0;
-    let x_1 = 20;
-    let vx_0 = 0;
-    let vx_1 = 10;
+    let x_0 = 30;
+    let x_1 = 50;
+    let v_0 = 30;
+    let v_1 = 50;
+    let dt = 0.05
     systems[0].parameters.x_0 = x_0;
-    systems[0].parameters.vx_0 = vx_0;
+    systems[0].parameters.v_0 = v_0;
+    systems[0].parameters.dt = dt;
     systems[0].initialyzeSystem();
     systems[1].parameters.x_0 = x_0;
-    systems[1].parameters.vx_0 = vx_1;
+    systems[1].parameters.v_0 = v_1;
+    systems[1].parameters.dt = dt;
     systems[1].initialyzeSystem();
     systems[2].parameters.x_0 = x_1;
-    systems[2].parameters.vx_0 = vx_1;
+    systems[2].parameters.v_0 = v_1;
+    systems[2].parameters.dt = dt;
     systems[2].initialyzeSystem();
     systems[3].parameters.x_0 = x_1;
-    systems[3].parameters.vx_0 = vx_0;
+    systems[3].parameters.v_0 = v_0;
+    systems[3].parameters.dt = dt;
     systems[3].initialyzeSystem();
     return systems;
   }
-
-  draw(systems, color, p5) {
+  drawBase(systems, color, p5) {
     let vertexes = [];
     for (let i = 0; i < 4; i++) {
       let s = systems[i];
-      let y = s.y;
-      let vy = s.vy * this.scale;
-      vertexes.push([y, vy]);
+      let x = s.x;
+      let v = s.v;
+      vertexes.push([x, v]);
     }
-
     p5.fill(color);
     p5.beginShape();
-    p5.stroke(150, 0, 0);
+    p5.stroke(0);
     for (let i = 0; i < 4; i++) {
       let x = vertexes[i][0] + p5.width / 2.;
       let y = vertexes[i][1] + p5.height / 2.;
       p5.vertex(x, y);
     }
+    p5.vertex(vertexes[0][0] + p5.width / 2., vertexes[0][1] + p5.height / 2.);
     p5.endShape();
+  }
+  drawHistory(systems, color, p5) {
+    for (let i = 0; i < 4; i++) {
+      let s = systems[i];
+      p5.stroke(color);
+      p5.noFill();
+      p5.beginShape();
+      for (let j = 0; j < s.history.length; j++) {
+        p5.vertex(
+            s.history[j][0] + p5.width / 2., s.history[j][1] + p5.height / 2.);
+      }
+      p5.endShape();
+    }
+  }
+  draw(systems, color, p5) {
+    this.drawBase(systems, color, p5);
+    this.drawHistory(systems, color, p5);
+    sc_arrows_namespace.drawAxis(p5, 'x', 'v');
+  }
+};
+
+spring_namespace.SpringPhaseSpaceEuler =
+    class extends spring_namespace.SpringPhaseSpaceBase {
+  constructor(method) {
+    super(method);
+    this.systems_an = super.getSystems('analitical');
+    this.systems_eu = super.getSystems(method + '_euler');
   }
   iter(p5) {
     for (let i = 0; i < 4; i++) {
       this.systems_an[i].calcSystem();
       this.systems_eu[i].calcSystem();
     }
-    this.draw(this.systems_an, 0, p5);
-    this.draw(this.systems_eu, 100, p5);
+    super.draw(this.systems_an, color_scheme.GREEN_ALPHA(p5), p5);
+    super.draw(this.systems_eu, color_scheme.RED(p5), p5);
   }
   reset() {
     for (let i = 0; i < 4; i++) {
       this.systems_eu[i].reset();
+      this.systems_an[i].reset();
+    }
+  }
+};
+
+spring_namespace.SpringPhaseSpaceAnalitical =
+    class extends spring_namespace.SpringPhaseSpaceBase {
+  constructor() {
+    super('analitical');
+    this.systems_an = super.getSystems('analitical');
+  }
+  iter(p5) {
+    for (let i = 0; i < 4; i++) {
+      this.systems_an[i].calcSystem();
+    }
+    super.draw(this.systems_an, color_scheme.GREEN(p5), p5);
+  }
+  reset() {
+    for (let i = 0; i < 4; i++) {
       this.systems_an[i].reset();
     }
   }

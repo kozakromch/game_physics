@@ -118,6 +118,7 @@ three_body_namespace.ThreeBodyInterface = class {
     p5.endShape();
   }
   draw_circle(p5, x, y, color, radius) {
+    p5.stroke(0);
     p5.fill(color);
     p5.ellipse(x * 50 + p5.width / 2, -y * 50 + p5.height / 2, radius, radius);
   }
@@ -126,9 +127,9 @@ three_body_namespace.ThreeBodyInterface = class {
     return Math.sqrt(m) * scale;
   }
   draw(p5) {
-    let c_1 = p5.color(255, 0, 0);
-    let c_2 = p5.color(0, 255, 0);
-    let c_3 = p5.color(0, 0, 255);
+    let c_1 = p5.color(color_scheme.RED(p5));
+    let c_2 = p5.color(color_scheme.GREEN(p5));
+    let c_3 = p5.color(color_scheme.BLUE(p5));
     this.draw_history(p5, this.three_body.history1, c_1);
     this.draw_history(p5, this.three_body.history2, c_2);
     this.draw_history(p5, this.three_body.history3, c_3);

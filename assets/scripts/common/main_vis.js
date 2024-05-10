@@ -1,8 +1,9 @@
 var main_visualizator_namespace = main_visualizator_namespace || {};
 
-main_visualizator_namespace.getMainVisualizator = function(interface) {
+main_visualizator_namespace.getMainVisualizator = function(
+    interface, with_axis = false) {
   var context = interface;
-  let sc_grid = new sc_grid_namespace.sc_grid(12, 21);
+  let sc_grid = new sc_grid_namespace.ScGrid(12, 21);
 
   let MainVisualizator = function(p5) {
     let base_vis =
@@ -10,11 +11,11 @@ main_visualizator_namespace.getMainVisualizator = function(interface) {
 
     let draw_iter = function(p5) {
       number_of_pause_frames = 0;
-      p5.background(color_scheme.BACKGROUND);
+      p5.background(color_scheme.BACKGROUND(p5));
       sc_grid.draw(p5);
       context.iter(p5);
-      p5.stroke(color_scheme.GROUND);
-      p5.fill(color_scheme.GROUND);
+      p5.stroke(color_scheme.GROUND(p5));
+      p5.fill(color_scheme.GROUND(p5));
       p5.rect(0, p5.height - 10, p5.width, 10);
     };
     let number_of_pause_frames = 0;
@@ -25,6 +26,8 @@ main_visualizator_namespace.getMainVisualizator = function(interface) {
       }
     };
     p5.setup = function() {
+      // set fps to 20
+      p5.frameRate(30);
       p5.createCanvas(base_vis.width, base_vis.height, p5.P2D, base_vis.canvas);
       draw_iter(p5);
     };

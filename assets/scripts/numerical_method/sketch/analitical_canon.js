@@ -9,7 +9,7 @@
     iter(p5) {
       this.canon_system.calcSystem();
       drawEnergyGraph(p5, this.canon_system.energy);
-      this.canon_vis.draw(p5, this.canon_system, 0, 255, 0, 255);
+      this.canon_vis.draw(p5, this.canon_system, color_scheme.GREEN(p5));
 
       // Draw info
       p5.fill(0);

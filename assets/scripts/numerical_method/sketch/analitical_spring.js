@@ -9,7 +9,7 @@
     iter(p5) {
       this.spring_system.calcSystem();
       drawEnergyGraph(p5, this.spring_system.energy);
-      this.spring_vis.draw(p5, this.spring_system, 0, 255, 0, 255);
+      this.spring_vis.draw(p5, this.spring_system, color_scheme.GREEN(p5), 255);
 
       // Draw info
       p5.fill(0);

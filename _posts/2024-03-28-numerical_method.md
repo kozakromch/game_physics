@@ -15,6 +15,8 @@ layout: post
 <script src = "{{site.baseurl}}/assets/scripts/common/energy.js"></script>
 <script src = "{{site.baseurl}}/assets/scripts/common/main_vis.js"></script>
 <script src = "{{site.baseurl}}/assets/scripts/common/color_scheme.js"></script>
+<script src = "{{site.baseurl}}/assets/scripts/common/sc_arrows.js"></script>
+
 <script src = "{{site.baseurl}}/assets/scripts/numerical_method/spring.js"></script>
 <script src = "{{site.baseurl}}/assets/scripts/numerical_method/canon.js"></script>
 <script src = "{{site.baseurl}}/assets/scripts/numerical_method/3_body.js"></script>

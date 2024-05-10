@@ -110,17 +110,18 @@ canon_namespace.CanonSystem = class {
 
 canon_namespace.CanonVis = class {
   constructor() {}
-  draw(p5, canon_system, r, g, b, o) {
+  draw(p5, canon_system, color) {
     let canon_pos_x = canon_system.x;
     let canon_pos_y = p5.height - canon_system.y;
 
     // Draw canon
-    p5.fill(r, g, b, o);
+    p5.stroke(0);
+    p5.fill(color);
     p5.ellipse(canon_pos_x, canon_pos_y, 20, 20);
     // Draw trajectory
     p5.noFill();
     p5.beginShape();
-    p5.stroke(r, g, b, o / 2.);
+    p5.stroke(color);
     for (let i = 0; i < canon_system.history.length; i++) {
       p5.vertex(
           canon_system.history[i][0], p5.height - canon_system.history[i][1]);
@@ -143,9 +144,10 @@ canon_namespace.CanonInterfaceEuler = class {
     this.system_euler.calcSystem();
 
     drawEnergyGraph(p5, this.system_euler.energy);
-
-    this.vis_an.draw(p5, this.system_an, 0, 255, 0, 100);
-    this.vis_euler.draw(p5, this.system_euler, 255, 0, 0, 255);
+    let c_an = color_scheme.GREEN_ALPHA(p5);
+    let c_eu = color_scheme.RED(p5);
+    this.vis_an.draw(p5, this.system_an, c_an);
+    this.vis_euler.draw(p5, this.system_euler, c_eu);
 
     // Draw info
     p5.fill(0);

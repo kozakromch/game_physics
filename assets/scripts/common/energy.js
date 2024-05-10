@@ -28,8 +28,8 @@ energy_namespace.Energy = class {
 }
 function drawEnergyGraph(p5, energy) {
   p5.noFill();
+  p5.stroke(color_scheme.ENERGY(p5));
   p5.beginShape();
-  p5.stroke(150, 0, 0);
   let min_energy = energy.min_energy;
   let max_energy = energy.max_energy;
   let energy_history = energy.energy_history;
