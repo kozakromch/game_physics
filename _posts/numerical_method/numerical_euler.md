@@ -38,7 +38,7 @@ content="
 
 "%}
 
-{% include /templates/include_sketch.html path="numerical_method/forward_euler_canon.js" base_name="forward_euler_canon" %}
+{% include /templates/include_sketch.html path="numerical_method/sketch/forward_euler_canon.js" base_name="forward_euler_canon" %}
 
 В принципе неплохо. Немного растет энергия, но симуляция достаточно короткая, чтобы это было заметно. 
 
@@ -55,7 +55,7 @@ content="
 \end{equation}
 "%}
 
-{% include /templates/include_sketch.html path="numerical_method/forward_euler_spring.js" base_name="forward_euler_spring" %}
+{% include /templates/include_sketch.html path="numerical_method/sketch/forward_euler_spring.js" base_name="forward_euler_spring" %}
 
 А вот здесь уже возрастание энергии не такое приятное. И проблема решается лишь частично уменьшением шага по времени. 
 Те энергия растет, но медленнее. 
@@ -177,11 +177,11 @@ content="
 \end{equation}
 "%}
 
-{% include /templates/include_sketch.html path="numerical_method/backward_euler_canon.js" base_name="backward_euler_canon" %}
+{% include /templates/include_sketch.html path="numerical_method/sketch/backward_euler_canon.js" base_name="backward_euler_canon" %}
 Ситуация с энергией в обратном Эйлере обратная. Она убывает. И на баллистической кривой это нормально.
 
 
-{% include /templates/include_sketch.html path="numerical_method/backward_euler_spring.js" base_name="backward_euler_spring" %}
+{% include /templates/include_sketch.html path="numerical_method/sketch/backward_euler_spring.js" base_name="backward_euler_spring" %}
 А вот здесь получается демпфированная пружинка. Из плюсов такой численной схемы. Пружинка безусловно устойчива.
 
 

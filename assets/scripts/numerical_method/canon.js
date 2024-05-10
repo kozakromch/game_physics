@@ -133,37 +133,105 @@ canon_namespace.CanonVis = class {
 canon_namespace.CanonInterfaceEuler = class {
   constructor(method) {
     this.base_name = method + '_euler_canon';
-    this.canon_system_euler =
-        new canon_namespace.CanonSystem(method + '_euler');
-    this.canon_vis_euler = new canon_namespace.CanonVis();
-    this.canon_system_an = new canon_namespace.CanonSystem('analitical');
-    this.canon_vis_an = new canon_namespace.CanonVis();
+    this.system_euler = new canon_namespace.CanonSystem(method + '_euler');
+    this.vis_euler = new canon_namespace.CanonVis();
+    this.system_an = new canon_namespace.CanonSystem('analitical');
+    this.vis_an = new canon_namespace.CanonVis();
   }
   iter(p5) {
-    p5.frameRate(30);
-    p5.background(220);
+    this.system_an.calcSystem();
+    this.system_euler.calcSystem();
 
+    drawEnergyGraph(p5, this.system_euler.energy);
 
-    this.canon_system_an.calcSystem();
-    this.canon_system_euler.calcSystem();
-
-    drawEnergyGraph(p5, this.canon_system_euler.energy);
-
-    this.canon_vis_an.draw(p5, this.canon_system_an, 0, 255, 0, 100);
-    this.canon_vis_euler.draw(p5, this.canon_system_euler, 255, 0, 0, 255);
-
-    // Draw ground
-    p5.st
-    p5.fill(100);
-    p5.rect(0, p5.height - 10, p5.width, 10);
+    this.vis_an.draw(p5, this.system_an, 0, 255, 0, 100);
+    this.vis_euler.draw(p5, this.system_euler, 255, 0, 0, 255);
 
     // Draw info
     p5.fill(0);
     p5.stroke(0);
-    p5.text('Full Energy: ' + this.canon_system_euler.E.toFixed(2), 10, 20);
+    p5.text('Full Energy: ' + this.system_euler.E.toFixed(2), 10, 20);
   }
   reset() {
-    this.canon_system_euler.reset();
-    this.canon_system_an.reset();
+    this.system_euler.reset();
+    this.system_an.reset();
+  }
+};
+
+canon_namespace.CanonPhaseSpace = class {
+  constructor(method) {
+    this.base_name = method + '_phase_canon';
+
+    this.systems_an = this.getSystems('analitical');
+    this.systems_eu = this.getSystems(method + '_euler');
+    this.scale = 20;
+  }
+  getSystems(name) {
+    let systems = [];
+    for (let i = 0; i < 4; i++) {
+      systems.push(new canon_namespace.CanonSystem(name));
+    }
+    let y_0 = 0;
+    let y_1 = 20;
+    let vy_0 = 0;
+    let vy_1 = 10;
+    systems[0].parameters.y_0 = y_0;
+    systems[0].parameters.vy_0 = vy_0;
+    systems[0].initialyzeSystem();
+    systems[1].parameters.y_0 = y_0;
+    systems[1].parameters.vy_0 = vy_1;
+    systems[1].initialyzeSystem();
+    systems[2].parameters.y_0 = y_1;
+    systems[2].parameters.vy_0 = vy_1;
+    systems[2].initialyzeSystem();
+    systems[3].parameters.y_0 = y_1;
+    systems[3].parameters.vy_0 = vy_0;
+    systems[3].initialyzeSystem();
+    return systems;
+  }
+  getMidPoint(systems) {
+    let mid_point = [0., 0.];
+    for (let i = 0; i < 4; i++) {
+      mid_point[0] += systems[i].y;
+      mid_point[1] += systems[i].vy * this.scale;
+    }
+    mid_point[0] /= 4.;
+    mid_point[1] /= 4.;
+    return mid_point;
+  }
+
+  draw(mid_point, systems, color, p5) {
+    let vertexes = [];
+    for (let i = 0; i < 4; i++) {
+      let s = systems[i];
+      let y = s.y;
+      let vy = s.vy * this.scale;
+      vertexes.push([y, vy]);
+    }
+
+    p5.fill(color);
+    p5.beginShape();
+    p5.stroke(150, 0, 0);
+    for (let i = 0; i < 4; i++) {
+      let x = vertexes[i][0] - mid_point[0] + p5.width / 2.;
+      let y = vertexes[i][1] - mid_point[1] + p5.height / 2.;
+      p5.vertex(x, y);
+    }
+    p5.endShape();
+  }
+  iter(p5) {
+    for (let i = 0; i < 4; i++) {
+      this.systems_an[i].calcSystem();
+      this.systems_eu[i].calcSystem();
+    }
+    let mid_point = this.getMidPoint(this.systems_an);
+    this.draw(mid_point, this.systems_an, 0, p5);
+    this.draw(mid_point, this.systems_eu, 100, p5);
+  }
+  reset() {
+    for (let i = 0; i < 4; i++) {
+      this.systems_eu[i].reset();
+      this.systems_an[i].reset();
+    }
   }
 };

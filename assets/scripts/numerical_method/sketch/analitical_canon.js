@@ -7,17 +7,9 @@
       this.canon_vis = new canon_namespace.CanonVis();
     }
     iter(p5) {
-      p5.frameRate(30);
-      p5.background(220);
-
       this.canon_system.calcSystem();
       drawEnergyGraph(p5, this.canon_system.energy);
       this.canon_vis.draw(p5, this.canon_system, 0, 255, 0, 255);
-
-      // Draw ground
-      p5.fill(100);
-      p5.stroke(100);
-      p5.rect(0, p5.height - 10, p5.width, 10);
 
       // Draw info
       p5.fill(0);

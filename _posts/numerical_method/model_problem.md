@@ -65,7 +65,7 @@ content="
     \end{split}
 \end{equation}
 
-{% include /templates/include_sketch.html path="numerical_method/analitical_canon.js" base_name="analitical_canon" %}
+{% include /templates/include_sketch.html path="numerical_method/sketch/analitical_canon.js" base_name="analitical_canon" %}
 </div>
 
 ### Пружинка
@@ -110,5 +110,5 @@ content="
     x(t) = (x_0\cos(\omega t) + v_0\sin(\omega t)),
 \end{equation}
 </div>
-{% include /templates/include_sketch.html path="numerical_method/analitical_spring.js" base_name="analitical_spring" %}
+{% include /templates/include_sketch.html path="numerical_method/sketch/analitical_spring.js" base_name="analitical_spring" %}
 

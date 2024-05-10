@@ -145,37 +145,95 @@ spring_namespace.SpringVis = class {
 spring_namespace.SpringInterfaceEuler = class {
   constructor(method) {
     this.base_name = method + '_euler_spring';
-    this.spring_system_euler =
-        new spring_namespace.SpringSystem(method + '_euler');
-    this.spring_vis_euler = new spring_namespace.SpringVis();
-    this.spring_system_an = new spring_namespace.SpringSystem('analitical');
-    this.spring_vis_an = new spring_namespace.SpringVis();
+    this.system_euler = new spring_namespace.SpringSystem(method + '_euler');
+    this.vis_euler = new spring_namespace.SpringVis();
+    this.system_an = new spring_namespace.SpringSystem('analitical');
+    this.vis_an = new spring_namespace.SpringVis();
   }
   iter(p5) {
-    p5.frameRate(30);
-    p5.background(220);
+    this.system_an.calcSystem();
+    this.system_euler.calcSystem();
 
+    drawEnergyGraph(p5, this.system_euler.energy);
 
-    this.spring_system_an.calcSystem();
-    this.spring_system_euler.calcSystem();
-
-    drawEnergyGraph(p5, this.spring_system_euler.energy);
-
-    this.spring_vis_an.draw(p5, this.spring_system_an, 0, 255, 0, 100);
-    this.spring_vis_euler.draw(p5, this.spring_system_euler, 255, 0, 0, 255);
-
-    // Draw ground
-    p5.st
-    p5.fill(100);
-    p5.rect(0, p5.height - 10, p5.width, 10);
+    this.vis_an.draw(p5, this.system_an, 0, 255, 0, 100);
+    this.vis_euler.draw(p5, this.system_euler, 255, 0, 0, 255);
 
     // Draw info
     p5.fill(0);
     p5.stroke(0);
-    p5.text('Full Energy: ' + this.spring_system_euler.E.toFixed(2), 10, 20);
+    p5.text('Full Energy: ' + this.system_euler.E.toFixed(2), 10, 20);
   }
   reset() {
-    this.spring_system_euler.reset();
-    this.spring_system_an.reset();
+    this.system_euler.reset();
+    this.system_an.reset();
+  }
+};
+
+
+spring_namespace.SpringPhaseSpace = class {
+  constructor(method) {
+    this.base_name = method + '_phase_spring';
+
+    this.systems_an = this.getSystems('analitical');
+    this.systems_eu = this.getSystems(method + '_euler');
+    this.scale = 20;
+  }
+  getSystems(name) {
+    let systems = [];
+    for (let i = 0; i < 4; i++) {
+      systems.push(new canon_namespace.CanonSystem(name));
+    }
+    let x_0 = 0;
+    let x_1 = 20;
+    let vx_0 = 0;
+    let vx_1 = 10;
+    systems[0].parameters.x_0 = x_0;
+    systems[0].parameters.vx_0 = vx_0;
+    systems[0].initialyzeSystem();
+    systems[1].parameters.x_0 = x_0;
+    systems[1].parameters.vx_0 = vx_1;
+    systems[1].initialyzeSystem();
+    systems[2].parameters.x_0 = x_1;
+    systems[2].parameters.vx_0 = vx_1;
+    systems[2].initialyzeSystem();
+    systems[3].parameters.x_0 = x_1;
+    systems[3].parameters.vx_0 = vx_0;
+    systems[3].initialyzeSystem();
+    return systems;
+  }
+
+  draw(systems, color, p5) {
+    let vertexes = [];
+    for (let i = 0; i < 4; i++) {
+      let s = systems[i];
+      let y = s.y;
+      let vy = s.vy * this.scale;
+      vertexes.push([y, vy]);
+    }
+
+    p5.fill(color);
+    p5.beginShape();
+    p5.stroke(150, 0, 0);
+    for (let i = 0; i < 4; i++) {
+      let x = vertexes[i][0] + p5.width / 2.;
+      let y = vertexes[i][1] + p5.height / 2.;
+      p5.vertex(x, y);
+    }
+    p5.endShape();
+  }
+  iter(p5) {
+    for (let i = 0; i < 4; i++) {
+      this.systems_an[i].calcSystem();
+      this.systems_eu[i].calcSystem();
+    }
+    this.draw(this.systems_an, 0, p5);
+    this.draw(this.systems_eu, 100, p5);
+  }
+  reset() {
+    for (let i = 0; i < 4; i++) {
+      this.systems_eu[i].reset();
+      this.systems_an[i].reset();
+    }
   }
 };
