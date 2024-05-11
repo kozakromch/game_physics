@@ -13,7 +13,7 @@ spring_namespace.SpringSystem = class {
     this.method = method;
     this.parameters = new spring_namespace.Parameters();
     this.energy = new energy_namespace.Energy();
-    this.max_history = 100;
+    this.max_history = 80;
     this.initialyzeSystem();
   }
   reset() {
@@ -189,11 +189,11 @@ spring_namespace.SpringPhaseSpaceBase = class {
     for (let i = 0; i < 4; i++) {
       systems.push(new spring_namespace.SpringSystem(name));
     }
-    let x_0 = 30;
-    let x_1 = 50;
-    let v_0 = 30;
-    let v_1 = 50;
-    let dt = 0.05
+    let x_0 = 45;
+    let x_1 = 75;
+    let v_0 = 45;
+    let v_1 = 75;
+    let dt = 0.08;
     systems[0].parameters.x_0 = x_0;
     systems[0].parameters.v_0 = v_0;
     systems[0].parameters.dt = dt;
@@ -212,7 +212,7 @@ spring_namespace.SpringPhaseSpaceBase = class {
     systems[3].initialyzeSystem();
     return systems;
   }
-  drawBase(systems, color, p5) {
+  drawBases(systems, color, p5) {
     let vertexes = [];
     for (let i = 0; i < 4; i++) {
       let s = systems[i];
@@ -231,23 +231,25 @@ spring_namespace.SpringPhaseSpaceBase = class {
     p5.vertex(vertexes[0][0] + p5.width / 2., vertexes[0][1] + p5.height / 2.);
     p5.endShape();
   }
-  drawHistory(systems, color, p5) {
-    for (let i = 0; i < 4; i++) {
+  drawHistories(systems, color, p5) {
+    for (let i = 0; i < systems.length; i++) {
+      let trajectory = [];
       let s = systems[i];
-      p5.stroke(color);
-      p5.noFill();
-      p5.beginShape();
       for (let j = 0; j < s.history.length; j++) {
-        p5.vertex(
-            s.history[j][0] + p5.width / 2., s.history[j][1] + p5.height / 2.);
+        trajectory.push({
+          x: s.history[j][0] + p5.width / 2,
+          y: s.history[j][1] + p5.height / 2
+        });
       }
-      p5.endShape();
+      let color_from = common_vis_namespace.copyColor(p5, color);
+      color_from.setAlpha(0);
+      common_vis_namespace.alphaLine(p5, color_from, color, trajectory);
     }
   }
   draw(systems, color, p5) {
-    this.drawBase(systems, color, p5);
-    this.drawHistory(systems, color, p5);
-    sc_arrows_namespace.drawAxis(p5, 'x', 'v');
+    common_vis_namespace.drawAxis(p5, 'x', 'v');
+    this.drawHistories(systems, color, p5);
+    this.drawBases(systems, color, p5);
   }
 };
 

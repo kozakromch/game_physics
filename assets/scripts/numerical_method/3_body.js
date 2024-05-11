@@ -51,7 +51,7 @@ three_body_namespace.ThreeBody = class {
     this.history1 = [];
     this.history2 = [];
     this.history3 = [];
-    this.max_history = 100;
+    this.max_history = 150;
     this.t = 0.;
   }
   calcSystem() {
@@ -107,15 +107,17 @@ three_body_namespace.ThreeBodyInterface = class {
     this.base_name = 'three_body_sketch';
   }
   draw_history(p5, history, color) {
-    p5.stroke(color);
-    p5.noFill();
-    p5.beginShape();
+    let trajectory = [];
     for (let i = 0; i < history.length; i++) {
-      p5.vertex(
-          history[i][0] * 50 + p5.width / 2,
-          -history[i][1] * 50 + p5.height / 2);
+      trajectory.push({
+        x: history[i][0] * 50 + p5.width / 2,
+        y: -history[i][1] * 50 + p5.height / 2
+      });
     }
-    p5.endShape();
+
+    let color_from = Object.create(color);
+    color_from.setAlpha(0);
+    common_vis_namespace.alphaLine(p5, color_from, color, trajectory);
   }
   draw_circle(p5, x, y, color, radius) {
     p5.stroke(0);
@@ -130,9 +132,6 @@ three_body_namespace.ThreeBodyInterface = class {
     let c_1 = p5.color(color_scheme.RED(p5));
     let c_2 = p5.color(color_scheme.GREEN(p5));
     let c_3 = p5.color(color_scheme.BLUE(p5));
-    this.draw_history(p5, this.three_body.history1, c_1);
-    this.draw_history(p5, this.three_body.history2, c_2);
-    this.draw_history(p5, this.three_body.history3, c_3);
     // draw circle for each body
 
     let r_1 = this.getRadius(this.three_body.m1);
@@ -141,6 +140,11 @@ three_body_namespace.ThreeBodyInterface = class {
     this.draw_circle(p5, this.three_body.x2, this.three_body.y2, c_2, r_2);
     let r_3 = this.getRadius(this.three_body.m3);
     this.draw_circle(p5, this.three_body.x3, this.three_body.y3, c_3, r_3);
+
+
+    this.draw_history(p5, this.three_body.history1, c_1);
+    this.draw_history(p5, this.three_body.history2, c_2);
+    this.draw_history(p5, this.three_body.history3, c_3);
   }
 
   iter(p5) {

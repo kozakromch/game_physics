@@ -36,23 +36,66 @@
 {% include /templates/include_sketch.html path="numerical_method/sketch/forward_phase_spring.js" base_name="forward_phase_spring" %}
 {% include /templates/include_sketch.html path="numerical_method/sketch/backward_phase_spring.js" base_name="backward_phase_spring" %}
 
+Ну в принципе достаточно ожидаемые результаты. У явного метода росла энергия и здесь видно что и объем растет. У неявного наоборот все уменьшается.
+
 <!-- 
 Вот так выглядит фазовое пространство для пушки
 {% include /templates/include_sketch.html path="numerical_method/sketch/forward_phase_canon.js" base_name="forward_phase_canon" %}
-{% include /templates/include_sketch.html path="numerical_method/sketch/symplectic_phase_canon.js" base_name="symplectic_phase_canon" %} -->
+ -->
 </div>
 
 ### Semi-implicit Euler
 
 <div>
-Самый простой и самый популярный симплектический метод -- это метод полуявного Эйлера.
+Самый простой и самый популярный симплектический метод -- это метод полуявного Эйлера. Он используется во многих физических движках. 
+Если пока не понятна какая схема нужна для вашей задачи, а у вас есть скорости и координаты, то лучше всего начать с этого метода.
 Он очень похож на обычный метод Эйлера, но с одним отличием.
 
+Вот формула для обычного метода Эйлера
+\begin{equation}
+    \begin{split}
+        &\dot{x}_{k+1} = \dot{x}_k + f(x_k)\Delta t.
+        &x_{k+1} = x_k + \dot{x_k}\Delta t,\\
+    \end{split}
+\end{equation}
 
+А вот для полуявного Эйлера
+\begin{equation}
+    \begin{split}
+        &\dot{x}_{k+1} = \dot{x}_k + f(x_k)\Delta t.
+        &x_{k+1} = x_k + \dot{x}_{k+1}\Delta t,\\
+    \end{split}
+\end{equation}
+Разница в том, что скорость на следующем шаге считается по новому положению.
+И пора симулировать наши модельные задачи 
+
+{% include /templates/include_sketch.html path="numerical_method/sketch/symplectic_euler_spring.js" base_name="symplectic_euler_spring" %}
+Пружинка получилась супер стабильная. Энергия осцилирует, но всегда возращается обратно и это очень круто. Потенциально мы можем симулировать такие системы вечно. 
+
+Если посмотреть на фазовое пространство, то там тоже все хорошо. Объем сохраняется и это очень круто. 
+Есть ошибка, но она не накапливается.
+{% include /templates/include_sketch.html path="numerical_method/sketch/symplectic_phase_spring.js" base_name="symplectic_phase_spring" %}
+
+Но вот пример того что сохранения фазового объема не сохраняет энергию. 
 
 {% include /templates/include_sketch.html path="numerical_method/sketch/symplectic_euler_canon.js" base_name="symplectic_euler_canon" %}
-{% include /templates/include_sketch.html path="numerical_method/sketch/symplectic_euler_spring.js" base_name="symplectic_euler_spring" %}
 
+Поскольку координата и скорость постоянно меняются, то для того чтобы показавать фазовое пространство я отцентрировал его в середине аналитического решения.
+
+{% include /templates/include_sketch.html path="numerical_method/sketch/symplectic_phase_canon.js" base_name="symplectic_phase_canon" %}
+
+Объем сохраняется, но энергия падает тк появляется ошибка в скорости и позиции которые накапливаются со временем. 
+Тк решение не периодическое у нас нет шанса сбалансировать ошибку.
+
+
+</div>
+
+#### Анализ устойчивости
+
+<div>
+
+
+{% include /templates/image.html path='/numerical_method/stable_zone_symplectic.excalidraw.svg' %}
 
 
 </div>

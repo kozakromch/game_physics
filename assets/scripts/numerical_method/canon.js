@@ -159,13 +159,9 @@ canon_namespace.CanonInterfaceEuler = class {
     this.system_an.reset();
   }
 };
-
-canon_namespace.CanonPhaseSpace = class {
+canon_namespace.CanonPhaseSpaceBase = class {
   constructor(method) {
     this.base_name = method + '_phase_canon';
-
-    this.systems_an = this.getSystems('analitical');
-    this.systems_eu = this.getSystems(method + '_euler');
     this.scale = 20;
   }
   getSystems(name) {
@@ -211,15 +207,38 @@ canon_namespace.CanonPhaseSpace = class {
       vertexes.push([y, vy]);
     }
 
+    p5.stroke(0);
     p5.fill(color);
     p5.beginShape();
-    p5.stroke(150, 0, 0);
     for (let i = 0; i < 4; i++) {
       let x = vertexes[i][0] - mid_point[0] + p5.width / 2.;
       let y = vertexes[i][1] - mid_point[1] + p5.height / 2.;
       p5.vertex(x, y);
     }
+    p5.vertex(
+        vertexes[0][0] - mid_point[0] + p5.width / 2.,
+        vertexes[0][1] - mid_point[1] + p5.height / 2.);
     p5.endShape();
+  }
+
+  drawText(mid_point, systems, p5) {
+    const index = 3;
+    const s = systems[index];
+    const x = s.y - mid_point[0] + p5.width / 2.;
+    const y = s.vy * this.scale - mid_point[1] + p5.height / 2.;
+    // write text
+    p5.fill(0);
+    p5.stroke(0);
+    p5.text('x: ' + s.x.toFixed(0) + 'v: ' + s.vy.toFixed(0), x, y);
+  }
+};
+
+canon_namespace.CanonPhaseSpaceEuler =
+    class extends canon_namespace.CanonPhaseSpaceBase {
+  constructor(method) {
+    super(method);
+    this.systems_eu = this.getSystems(method + '_euler');
+    this.systems_an = this.getSystems('analitical');
   }
   iter(p5) {
     for (let i = 0; i < 4; i++) {
@@ -227,9 +246,11 @@ canon_namespace.CanonPhaseSpace = class {
       this.systems_eu[i].calcSystem();
     }
     let mid_point = this.getMidPoint(this.systems_an);
-    this.draw(mid_point, this.systems_an, 0, p5);
-    this.draw(mid_point, this.systems_eu, 100, p5);
-  }
+    this.draw(mid_point, this.systems_an, color_scheme.GREEN_ALPHA(p5), p5);
+    this.draw(mid_point, this.systems_eu, color_scheme.RED(p5), p5);
+    this.drawText(mid_point, this.systems_an, p5);
+  };
+
   reset() {
     for (let i = 0; i < 4; i++) {
       this.systems_eu[i].reset();
