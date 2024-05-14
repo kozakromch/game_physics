@@ -1,4 +1,3 @@
-</div>
 
 ## Методы Эйлера
 
@@ -129,7 +128,7 @@ x(t + \Delta t) - x*{k+1} = \frac{\ddot{x}(t)\Delta t^2}{2} + \ldots
 Получается что локальная ошибка метода Эйлера пропорциональна квадрату шага по времени.
 Глобальная ошибка же пропорциональна числу шагов по времени умноженному на локальную ошибку.
 
-{% include /templates/image.html path="numerical_method/accuracy_forward.excalidraw.svg" %}
+{% include /templates/image.html path="numerical_method/accuracy_forward.excalidraw.png" %}
 
 
 </div>
@@ -244,3 +243,4 @@ z_k = B^k\cdot z_0\qquad (2)
 Если вам нужно интегрировать уравнение движение с силами и прочи используйте методы из следующей главы.
 
 Умные люди придумали схемы, которые берут от обоих методов по чуть-чуть.
+</div>

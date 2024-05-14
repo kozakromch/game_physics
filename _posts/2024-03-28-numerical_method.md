@@ -25,6 +25,8 @@ layout: post
 
 {% include_relative numerical_method/intro.md %}
 
+{% include_relative numerical_method/base_words.md %}
+
 {% include_relative numerical_method/model_problem.md %}
 
 {% include_relative numerical_method/numerical_euler.md %}
