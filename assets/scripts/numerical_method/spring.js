@@ -40,6 +40,8 @@ spring_namespace.SpringSystem = class {
       this.backwardEuler();
     } else if (this.method == 'symplectic_euler') {
       this.symplecticEuler();
+    } else if (this.method == 'verlet') {
+      this.verlet();
     } else if (this.method == 'analitical') {
       this.analitical();
     }
@@ -74,6 +76,15 @@ spring_namespace.SpringSystem = class {
     let acceleration = -k / m * this.x;
     this.v += acceleration * this.parameters.dt;
     this.x += this.v * this.parameters.dt;
+  }
+  verlet() {
+    const k = this.parameters.k;
+    const m = this.parameters.m;
+    let acceleration = -k / m * this.x;
+    this.x += this.v * this.parameters.dt +
+        0.5 * acceleration * this.parameters.dt ** 2;
+    let acceleration_new = -k / m * this.x;
+    this.v += 0.5 * (acceleration + acceleration_new) * this.parameters.dt;
   }
   analitical() {
     const k = this.parameters.k;
@@ -152,8 +163,8 @@ spring_namespace.SpringVis = class {
 
 spring_namespace.SpringInterfaceEuler = class {
   constructor(method) {
-    this.base_name = method + '_euler_spring';
-    this.system_euler = new spring_namespace.SpringSystem(method + '_euler');
+    this.base_name = method + '_spring';
+    this.system_euler = new spring_namespace.SpringSystem(method);
     this.vis_euler = new spring_namespace.SpringVis();
     this.system_an = new spring_namespace.SpringSystem('analitical');
     this.vis_an = new spring_namespace.SpringVis();
@@ -258,7 +269,7 @@ spring_namespace.SpringPhaseSpaceEuler =
   constructor(method) {
     super(method);
     this.systems_an = super.getSystems('analitical');
-    this.systems_eu = super.getSystems(method + '_euler');
+    this.systems_eu = super.getSystems(method);
   }
   iter(p5) {
     for (let i = 0; i < 4; i++) {

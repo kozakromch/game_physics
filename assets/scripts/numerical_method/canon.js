@@ -39,6 +39,8 @@ canon_namespace.CanonSystem = class {
       this.backwardEuler();
     } else if (this.method == 'symplectic_euler') {
       this.symplecticEuler();
+    } else if (this.method == 'verlet') {
+      this.verlet();
     } else if (this.method == 'analitical') {
       this.analitical();
     }
@@ -83,6 +85,15 @@ canon_namespace.CanonSystem = class {
     this.y += this.vy * this.parameters.dt;
     this.vx += 0;
     this.x += this.vx * this.parameters.dt;
+  }
+  verlet() {
+    const g = this.parameters.g;
+    let acceleration = -g;
+    this.y += this.vy * this.parameters.dt +
+        0.5 * acceleration * this.parameters.dt ** 2;
+    this.x += this.vx * this.parameters.dt;
+    let acceleration_new = -g;
+    this.vy += 0.5 * (acceleration + acceleration_new) * this.parameters.dt;
   }
   analitical() {
     const g = this.parameters.g;
@@ -133,8 +144,8 @@ canon_namespace.CanonVis = class {
 
 canon_namespace.CanonInterfaceEuler = class {
   constructor(method) {
-    this.base_name = method + '_euler_canon';
-    this.system_euler = new canon_namespace.CanonSystem(method + '_euler');
+    this.base_name = method + '_canon';
+    this.system_euler = new canon_namespace.CanonSystem(method);
     this.vis_euler = new canon_namespace.CanonVis();
     this.system_an = new canon_namespace.CanonSystem('analitical');
     this.vis_an = new canon_namespace.CanonVis();
@@ -237,7 +248,7 @@ canon_namespace.CanonPhaseSpaceEuler =
     class extends canon_namespace.CanonPhaseSpaceBase {
   constructor(method) {
     super(method);
-    this.systems_eu = this.getSystems(method + '_euler');
+    this.systems_eu = this.getSystems(method);
     this.systems_an = this.getSystems('analitical');
   }
   iter(p5) {

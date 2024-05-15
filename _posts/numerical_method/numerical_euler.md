@@ -91,7 +91,7 @@ content="
 "%}
 Для того чтобы многомерная система была устойчива, необходимо чтобы все собственные значения матрицы $F$ были меньше 1 по модулю.
 Получается у прямого Эйлера вот такая зона устойчивости:
-{% include /templates/image.html path="numerical_method/stable_zone_forward.excalidraw.svg" %}
+{% include /templates/image.html path="numerical_method/stable_zone_forward.excalidraw.png" %}
 
 Самое забавное в этом методе, что вот такая недемпфировання пружинка безусловно неустойчива. 
 Те можно уменьшать шаг по времени сколько угодно, но она все равно будет накачиваться энергией и улетать в космос.
@@ -205,7 +205,7 @@ y*{k+1} = (1 - \Delta t \cdot \lambda)^{-1}\cdot y_k
 Сразу можно заметить, что зона устойчивости для неявного метода больше
 
 
-{% include /templates/image.html path="numerical_method/stable_zone_backward.excalidraw.svg" %}
+{% include /templates/image.html path="numerical_method/stable_zone_backward.excalidraw.png" %}
 
 </div>
 

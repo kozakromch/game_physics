@@ -29,8 +29,8 @@
 
 Давайте для примера посмотрим что происходит с фазовым объемом для явного и неявного метода в пружинке
 
-{% include /templates/include_sketch.html path="numerical_method/sketch/forward_phase_spring.js" base_name="forward_phase_spring" %}
-{% include /templates/include_sketch.html path="numerical_method/sketch/backward_phase_spring.js" base_name="backward_phase_spring" %}
+{% include /templates/include_sketch.html path="numerical_method/sketch/forward_euler_phase_spring.js" base_name="forward_euler_phase_spring" %}
+{% include /templates/include_sketch.html path="numerical_method/sketch/backward_euler_phase_spring.js" base_name="backward_euler_phase_spring" %}
 
 Ну в принципе достаточно ожидаемые результаты. У явного метода росла энергия и здесь видно что и объем растет. У неявного наоборот все уменьшается.
 
@@ -38,16 +38,51 @@
 Вот так выглядит фазовое пространство для пушки
 {% include /templates/include_sketch.html path="numerical_method/sketch/forward_phase_canon.js" base_name="forward_phase_canon" %}
  -->
+
 </div>
 
-### Semi-implicit Euler
+### Метод Верле
 
 <div>
+Также известен как Verlet integration, Störmer's method.
+Идея такая:
+Если разложить в ряд Тейлора $x_{k+1}$ и $x_{k-1}$ 
+\begin{equation}
+    \begin{split}
+        &x_{k+1} = x_k + v_k\Delta t + \frac{1}{2}a_k\Delta t^2 + \frac{1}{6}b_k\Delta t^3 + O(\Delta t^4) \\
+        &x_{k-1} = x_k - v_k\Delta t + \frac{1}{2}a_k\Delta t^2 + \frac{1}{6}b_k\Delta t^3 + O(\Delta t^4) 
+    \end{split}
+\end{equation}
+Сложить эти два уравнения и выразить $x_{k+1}$:
+\begin{equation}
+    \begin{split}
+        &x_{k+1} = 2x_k - x_{k-1} + a_k\Delta t^2 + O(\Delta t^4)
+    \end{split}
+\end{equation}
+
+{% include /templates/include_sketch.html path="numerical_method/sketch/verlet_spring.js" base_name="verlet_spring" %}
+
+{% include /templates/include_sketch.html path="numerical_method/sketch/verlet_phase_spring.js" base_name="verlet_phase_spring" %}
+
+{% include /templates/include_sketch.html path="numerical_method/sketch/verlet_canon.js" base_name="verlet_canon" %}
+
+{% include /templates/include_sketch.html path="numerical_method/sketch/verlet_phase_canon.js" base_name="verlet_phase_canon" %}
+
+
+</div>
+
+### Symplectic Euler
+
+<div>
+У этого метода очень много названий -- Semi-implicit Euler, Semi-explicit Euler, Symplectic Euler, Störmer-Verlet method.
 Самый простой и самый популярный симплектический метод -- это метод полуявного Эйлера. 
 
-Его идея используется во многих физических движках. 
+Его идея используется во многих физических движках.  Базовая идея такая: 
+У нас уравнение движения второго порядка. Сначала нужно интегрировать ускорение и получать скорость, потом скорость и получать позицию.
+Раньше мы решали это одновременно явным или неявным методом.
+А какие свойства мы получим если одно уравнение будем решать явно, а другое неявно?
 
-В явном виде он выглядит так
+Наиболее популярная вариация этого метода -- это метод полуявного Эйлера.
 \begin{equation}
     \begin{split}
         &v_{k+1} = v_k + f(x_k, v_{k+1})\Delta t\\
@@ -85,7 +120,7 @@
 Пружинка получилась супер стабильная. Энергия осцилирует, но всегда возращается обратно и это очень круто. Потенциально мы можем симулировать такие системы вечно. 
 Если посмотреть на фазовое пространство, то там тоже все хорошо. Объем сохраняется и это очень круто. 
 Есть ошибка, но она не накапливается. А возвращается обратно.
-{% include /templates/include_sketch.html path="numerical_method/sketch/symplectic_phase_spring.js" base_name="symplectic_phase_spring" %}
+{% include /templates/include_sketch.html path="numerical_method/sketch/symplectic_euler_phase_spring.js" base_name="symplectic_euler_phase_spring" %}
 
 Вот еще пример того что сохранения фазового объема не сохраняет энергию. 
 
@@ -93,7 +128,7 @@
 
 Поскольку координата и скорость постоянно меняются, то для того чтобы показавать фазовое пространство я отцентрировал его в середине аналитического решения.
 
-{% include /templates/include_sketch.html path="numerical_method/sketch/symplectic_phase_canon.js" base_name="symplectic_phase_canon" %}
+{% include /templates/include_sketch.html path="numerical_method/sketch/symplectic_euler_phase_canon.js" base_name="symplectic_euler_phase_canon" %}
 
 Объем сохраняется, но энергия падает тк появляется ошибка в скорости и позиции которые накапливаются со временем. 
 Тк решение не периодическое у нас нет шанса сбалансировать ошибку.
@@ -111,7 +146,7 @@
 
 Должно выполняться условие $(\Delta t * w) < 2$  где $w$ -- частота осцилляции. Если мы хотим визуализировать такие осциляции мы в любом случае должны требовать чтобы $\Delta t << w$.  Тк иначе мы просто не увидим этих колебаний. 
 
-{% include /templates/image.html path='/numerical_method/stable_zone_symplectic.excalidraw.svg' %}
+{% include /templates/image.html path='/numerical_method/stable_zone_symplectic.excalidraw.png' %}
 
 </div>
 
@@ -122,11 +157,7 @@
 У полуявного Эйлера локальный второй порядок точности как и у обычного Эйлера. И в общем случае первый порядок глобальной точности. Но для периодических систем работает симплектическая магия и ошибка не накапливается
 
 
-</div>
 
-### Метод Верле
-
-<div>
 
 
 
