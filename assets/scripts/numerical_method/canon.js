@@ -80,15 +80,14 @@ canon_namespace.CanonSystem = class {
   }
   symplecticEuler() {
     const g = this.parameters.g;
-    let acceleration = -g;
+    const acceleration = -g;
     this.vy += acceleration * this.parameters.dt;
     this.y += this.vy * this.parameters.dt;
-    this.vx += 0;
     this.x += this.vx * this.parameters.dt;
   }
   verlet() {
     const g = this.parameters.g;
-    let acceleration = -g;
+    const acceleration = -g;
     this.y += this.vy * this.parameters.dt +
         0.5 * acceleration * this.parameters.dt ** 2;
     this.x += this.vx * this.parameters.dt;
