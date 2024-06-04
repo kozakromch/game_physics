@@ -200,9 +200,9 @@ spring_namespace.SpringPhaseSpaceBase = class {
     for (let i = 0; i < 4; i++) {
       systems.push(new spring_namespace.SpringSystem(name));
     }
-    let x_0 = 45;
+    let x_0 = 35;
     let x_1 = 75;
-    let v_0 = 45;
+    let v_0 = 35;
     let v_1 = 75;
     let dt = 0.08;
     systems[0].parameters.x_0 = x_0;

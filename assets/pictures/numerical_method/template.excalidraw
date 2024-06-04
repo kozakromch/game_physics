@@ -5,52 +5,6 @@
   "elements": [
     {
       "type": "line",
-      "version": 2919,
-      "versionNonce": 16739060,
-      "isDeleted": false,
-      "id": "s6pxewmoz6sfhZ1gGUrhQ",
-      "fillStyle": "hachure",
-      "strokeWidth": 1,
-      "strokeStyle": "solid",
-      "roughness": 2,
-      "opacity": 10,
-      "angle": 1.5707963267948957,
-      "x": 682.3344907004097,
-      "y": 387.1688795188868,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "width": 696.2752010722054,
-      "height": 7.040263143586606e-13,
-      "seed": 1414965724,
-      "groupIds": [
-        "B9AKVQZVXBOEuTr0A5SCg"
-      ],
-      "frameId": null,
-      "roundness": {
-        "type": 2
-      },
-      "boundElements": [],
-      "updated": 1715622652834,
-      "link": null,
-      "locked": false,
-      "startBinding": null,
-      "endBinding": null,
-      "lastCommittedPoint": null,
-      "startArrowhead": null,
-      "endArrowhead": null,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          696.2752010722054,
-          7.040263143586606e-13
-        ]
-      ]
-    },
-    {
-      "type": "line",
       "version": 2806,
       "versionNonce": 557313612,
       "isDeleted": false,

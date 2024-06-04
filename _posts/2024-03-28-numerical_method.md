@@ -1,7 +1,7 @@
 ---
 title: Численные методы
 author: Роман Козак
-credential: {Петров Степан}
+credential: { Петров Степан }
 category: Jekyll
 layout: post
 ---
@@ -21,8 +21,6 @@ layout: post
 <script src = "{{site.baseurl}}/assets/scripts/numerical_method/canon.js"></script>
 <script src = "{{site.baseurl}}/assets/scripts/numerical_method/3_body.js"></script>
 
-
-
 {% include_relative numerical_method/intro.md %}
 
 {% include_relative numerical_method/base_words.md %}
@@ -36,5 +34,3 @@ layout: post
 {% include_relative numerical_method/RK.md %}
 
 {% include_relative numerical_method/summary.md %}
-
-
