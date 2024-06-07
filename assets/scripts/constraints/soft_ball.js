@@ -1,15 +1,15 @@
 var soft_ball_namespace = soft_ball_namespace || {};
 soft_ball_namespace.Parameters = class {
   constructor() {
-    this.m = 10.0;
-    this.g = 0.0;
-    this.num_points = 20;
-    this.radius = 1.;
-    this.x_0 = 200.;
+    this.m = 20.0;
+    this.g = 1.5;
+    this.num_points = 30;
+    this.radius = 50.;
+    this.x_0 = 250.;
     this.y_0 = 200.;
     this.vx_0 = 0.;
     this.vy_0 = 0.;
-    this.dt = 0.3;
+    this.dt = 0.2;
   }
 };
 soft_ball_namespace.Point = class {
@@ -23,10 +23,12 @@ soft_ball_namespace.Point = class {
   }
 };
 soft_ball_namespace.SpringConstraint = class {
-  constructor(point1, point2, distance) {
+  constructor(point1, point2, distance, frequency, damping) {
     this.point1 = point1;
     this.point2 = point2;
     this.distance = distance;
+    this.frequency = frequency;
+    this.critical_damping = damping;
   }
 };
 // constraint for volume conservation
@@ -47,6 +49,16 @@ soft_ball_namespace.SoftBallSystem = class {
   distance(point1, point2) {
     return Math.sqrt((point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2);
   }
+
+  addSpringConstraint(indent, frequency, damping) {
+    for (let i = 0; i < this.parameters.num_points; i++) {
+      let point1 = this.points[i];
+      let point2 = this.points[(i + indent) % this.parameters.num_points];
+      let distance = this.distance(point1, point2);
+      this.spring_constraints.push(new soft_ball_namespace.SpringConstraint(
+          point1, point2, distance, frequency, damping));
+    }
+  }
   initialyzeSystem() {
     this.x = this.parameters.x_0;
     this.y = this.parameters.y_0;
@@ -56,7 +68,8 @@ soft_ball_namespace.SoftBallSystem = class {
     // create 2d circle points
     this.points = [];
     for (let i = 0; i < this.parameters.num_points; i++) {
-      let angle = (Math.PI - 2 * Math.PI / this.parameters.num_points) * i;
+      let angle =
+          Math.PI / 2 + (2 * Math.PI / (this.parameters.num_points)) * i;
       // position of the point
       let x = this.x + this.parameters.radius * Math.cos(angle);
       let y = this.y + this.parameters.radius * Math.sin(angle);
@@ -68,65 +81,66 @@ soft_ball_namespace.SoftBallSystem = class {
       let ay = -this.parameters.g;
       this.points.push(new soft_ball_namespace.Point(x, y, vx, vy, ax, ay));
     }
+    this.point_0_x = this.points[0].x;
+    this.point_0_y = this.points[0].y;
+    this.point_0_x_target = this.points[0].x;
+    this.point_0_y_target = this.points[0].y;
 
     // create constraints between neibohour points
     this.spring_constraints = [];
-    for (let i = 0; i < this.parameters.num_points; i++) {
-      let point1 = this.points[i];
-      let point2 = this.points[(i + 1) % this.parameters.num_points];
-      this.spring_constraints.push(new soft_ball_namespace.SpringConstraint(
-          point1, point2, this.distance(point1, point2)));
-    }
-    // create volume constraint
-    this.volume_constraint = new soft_ball_namespace.VolumeConstraint(
-        this.points, Math.PI * this.parameters.radius ** 2 * 1000.);
-
-    // create  soft constraints
-    this.soft_constraints = [];
-    for (let i = 0; i < this.parameters.num_points; i++) {
-      let point1 = this.points[i];
-      let point2 = this.points[(i + 5) % this.parameters.num_points];
-      this.soft_constraints.push(new soft_ball_namespace.SpringConstraint(
-          point1, point2, this.distance(point1, point2)));
-    }
+    this.addSpringConstraint(1, 20.9, 1.1);
+    this.addSpringConstraint(2, 5.8, 0.9);
+    this.addSpringConstraint(3, 0.8, 0.1);
+    this.addSpringConstraint(4, 0.3, 0.1);
+    this.addSpringConstraint(5, 0.3, 0.1);
+    this.addSpringConstraint(6, 0.3, 0.1);
+    this.addSpringConstraint(7, 0.3, 0.1);
+    this.addSpringConstraint(8, 0.3, 0.1);
+    this.addSpringConstraint(9, 0.3, 0.1);
+    this.addSpringConstraint(10, 0.1, 0.1);
+    this.addSpringConstraint(11, 0.1, 0.1);
+    this.addSpringConstraint(12, 0.1, 0.1);
+    this.addSpringConstraint(13, 0.1, 0.1);
+    this.addSpringConstraint(14, 0.1, 0.1);
   }
 
-  calcSystem() {
-    // fix the first point
-
+  // can be called without arguments
+  calcSystem(is_mouse = false, mouse_x = 0, mouse_y = 0) {
     this.t += this.parameters.dt;
-    this.prev_points = this.points;
+    this.mouseLogic(is_mouse, mouse_x, mouse_y);
+    this.fixFirstPoint();
+    this.calcSpringConstraints(this.spring_constraints);
     this.fixFirstPoint();
     this.calcPoints();
-    this.calcVolumeConstraint();
-
-
     this.fixFirstPoint();
-    this.calcSpringConstraints(this.spring_constraints);
-
-    this.fixFirstPoint();
-    this.calcSpringConstraints(this.spring_constraints);
-
-
-    this.fixFirstPoint();
-
-    this.updateVelocity();
   }
+  mouseLogic(is_mouse, mouse_x, mouse_y) {
+    if (is_mouse) {
+      this.point_0_x_target = mouse_x;
+      this.point_0_y_target = mouse_y;
+    } else {
+      this.point_0_x_target = this.point_0_x;
+      this.point_0_y_target = this.point_0_y;
+    }
+  }
+
   fixFirstPoint() {
-    this.points[0].x = this.x;
-    this.points[0].y = this.y;
-    this.points[0].vx = this.vx;
-    this.points[0].vy = this.vy;
+    this.points[0].x = this.point_0_x_target;
+    this.points[0].y = this.point_0_y_target;
+    this.points[0].vx = 0;
+    this.points[0].vy = 0;
+    this.points[0].ax = 0;
+    this.points[0].ay = 0;
   }
   calcPoints() {
     for (let i = 0; i < this.parameters.num_points; i++) {
       let point = this.points[i];
-      let ax = point.ax;
-      let ay = point.ay;
-      point.vx += ax * this.parameters.dt;
-      point.vy += ay * this.parameters.dt;
+      point.vx += point.ax * this.parameters.dt;
+      point.vy += point.ay * this.parameters.dt;
       point.x += point.vx * this.parameters.dt;
       point.y += point.vy * this.parameters.dt;
+      point.ax = 0;
+      point.ay = -this.parameters.g;
     }
   }
   calcSpringConstraints(constraints) {
@@ -136,66 +150,19 @@ soft_ball_namespace.SoftBallSystem = class {
       let point2 = constraint.point2;
       let constraint_distance = constraint.distance;
       let distance = this.distance(point1, point2);
-      let delta = distance - constraint_distance;
-      let dx = (point2.x - point1.x) / distance;
-      let dy = (point2.y - point1.y) / distance;
-      let fx = delta * dx;
-      let fy = delta * dy;
-      let damping = 0.5;
-      point1.x += fx / 2 * damping;
-      point1.y += fy / 2 * damping;
-      point2.x -= fx / 2 * damping;
-      point2.y -= fy / 2 * damping;
-      // calculate acceleration
+      let dx = point2.x - point1.x;
+      let dy = point2.y - point1.y;
+      let freq = constraint.frequency;
+      let f = freq * (distance - constraint_distance);
+      let damping = constraint.critical_damping;
+      let dvx = point2.vx - point1.vx;
+      let dvy = point2.vy - point1.vy;
+      let fx = f * dx / distance + freq * damping * dvx;
+      let fy = f * dy / distance + freq * damping * dvy;
       point1.ax += fx / this.parameters.m;
       point1.ay += fy / this.parameters.m;
       point2.ax -= fx / this.parameters.m;
       point2.ay -= fy / this.parameters.m;
-    }
-  }
-  calcVolumeConstraint() {
-    let volume = 0;
-    // calculate volume by summing the area of the triangles
-    for (let i = 0; i < this.parameters.num_points; i++) {
-      let point1 = this.points[i];
-      let point2 = this.points[(i + 1) % this.parameters.num_points];
-      volume += 0.5 * (point1.x * point2.y - point2.x * point1.y);
-    }
-
-    console.log(volume, this.volume_constraint.volume);
-    let delta_volume = volume - this.volume_constraint.volume;
-    let damping = 1.;
-    // calculate differential volume by points coordinate
-    let grads = [];
-    for (let i = 0; i < this.parameters.num_points; i++) {
-      let point2 = this.points[(i + 1) % this.parameters.num_points];
-      let point0 =
-          this.points[(i - 1 + this.parameters.num_points) % this.parameters.num_points];
-
-      let diff_p_x = 0.5 * (point2.y - point0.y);
-      let diff_p_y = 0.5 * (point0.x - point2.x);
-      grads.push([diff_p_x, diff_p_y]);
-    }
-    let sum_sqr_grads = 0;
-    for (let i = 0; i < this.parameters.num_points; i++) {
-      let grad = grads[i];
-      sum_sqr_grads += grad[0] ** 2 + grad[1] ** 2;
-    }
-
-    let scaling = delta_volume / sum_sqr_grads;
-    for (let i = 0; i < this.parameters.num_points; i++) {
-      let point = this.points[i];
-      let grad = grads[i];
-      point.x += -grad[0] * scaling * damping;
-      point.y += -grad[1] * scaling * damping;
-    }
-  }
-  updateVelocity() {
-    for (let i = 0; i < this.parameters.num_points; i++) {
-      let point = this.points[i];
-      let prev_point = this.prev_points[i];
-      point.vx = (point.x - prev_point.x) / this.parameters.dt;
-      point.vy = (point.y - prev_point.y) / this.parameters.dt;
     }
   }
 };
@@ -203,7 +170,8 @@ soft_ball_namespace.SoftBallSystem = class {
 soft_ball_namespace.SoftBallVis = class {
   constructor() {}
   draw(p5, system, color) {
-    // Draw ball
+    let center_x = p5.width / 2;
+    let center_y = p5.height / 3;
     p5.stroke(0);
     p5.fill(color);
     for (let i = 0; i < system.parameters.num_points; i++) {
@@ -221,7 +189,16 @@ soft_ball_namespace.SoftBallInterface = class {
     this.base_name = 'soft_ball_sketch';
   }
   iter(p5) {
-    this.calcSystem();
+    // get from p5 mouse position
+    let mouse_x = p5.mouseX;
+    let mouse_y = p5.height - p5.mouseY;
+    // if left mouse button is pressed
+    let is_mouse = true;
+    if (mouse_x < 0 || mouse_x > p5.width || mouse_y < 0 ||
+        mouse_y > p5.height) {
+      is_mouse = false;
+    }
+    this.soft_ball.calcSystem(is_mouse, mouse_x, mouse_y);
     this.soft_ball_vis.draw(p5, this.soft_ball, color_scheme.RED(p5));
   }
   reset() {
