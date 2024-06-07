@@ -26,8 +26,7 @@ main_visualizator_namespace.getMainVisualizator = function(
       }
     };
     p5.setup = function() {
-      // set fps to 20
-      p5.frameRate(30);
+      p5.frameRate(60);
       p5.createCanvas(base_vis.width, base_vis.height, p5.P2D, base_vis.canvas);
       draw_iter(p5);
     };
