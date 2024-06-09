@@ -6,4 +6,5 @@ category: Jekyll
 layout: post
 ---
 
-This is an about page.
+Пытаюсь объяснить простым языком простые вещи о физике в компьютерных играх.
+

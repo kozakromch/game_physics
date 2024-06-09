@@ -2,7 +2,7 @@
 title: Численные методы
 author: Роман Козак
 credential: { Петров Степан }
-category: Jekyll
+category: pages
 layout: post
 ---
 
