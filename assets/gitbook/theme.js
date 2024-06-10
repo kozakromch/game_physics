@@ -3760,7 +3760,7 @@
             isLocal: Ht.test(Tt.protocol),
             global: !0,
             processData: !0,
-            async: !0,
+            async: true,
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             accepts: {
               '*': Mt,
@@ -4014,7 +4014,7 @@
           if (pe.cors || Wt && !t.crossDomain) return {
               send: function(o, i) {
                 var a, s = t.xhr();
-                if (s.open(t.type, t.url, t.async, t.username, t.password),
+                if (s.open(t.type, t.url, true, t.username, t.password),
                     t.xhrFields)
                   for (a in t.xhrFields) s[a] = t.xhrFields[a];
                 t.mimeType && s.overrideMimeType &&
