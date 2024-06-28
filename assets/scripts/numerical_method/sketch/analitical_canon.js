@@ -16,6 +16,7 @@
       p5.stroke(0);
       p5.text('Full Energy: ' + this.canon_system.E.toFixed(2), 10, 20);
     }
+    setup(p5) {}
     reset() {
       this.canon_system.reset();
     }

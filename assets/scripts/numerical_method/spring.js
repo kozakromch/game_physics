@@ -183,6 +183,7 @@ spring_namespace.SpringInterfaceEuler = class {
     p5.stroke(0);
     p5.text('Full Energy: ' + this.system_euler.E.toFixed(2), 10, 20);
   }
+  setup(p5) {}
   reset() {
     this.system_euler.reset();
     this.system_an.reset();
@@ -279,6 +280,7 @@ spring_namespace.SpringPhaseSpaceEuler =
     super.draw(this.systems_an, color_scheme.GREEN_ALPHA(p5), p5);
     super.draw(this.systems_eu, color_scheme.RED(p5), p5);
   }
+  setup(p5) {}
   reset() {
     for (let i = 0; i < 4; i++) {
       this.systems_eu[i].reset();
@@ -299,6 +301,7 @@ spring_namespace.SpringPhaseSpaceAnalitical =
     }
     super.draw(this.systems_an, color_scheme.GREEN(p5), p5);
   }
+  setup(p5) {}
   reset() {
     for (let i = 0; i < 4; i++) {
       this.systems_an[i].reset();

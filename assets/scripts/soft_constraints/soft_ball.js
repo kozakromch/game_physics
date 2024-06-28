@@ -204,6 +204,7 @@ soft_ball_namespace.SoftBallInterface = class {
   reset() {
     this.soft_ball.reset();
   }
+  setup(p5) {}
   calcSystem() {
     this.soft_ball.calcSystem();
   }

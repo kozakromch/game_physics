@@ -164,6 +164,7 @@ canon_namespace.CanonInterfaceEuler = class {
     p5.stroke(0);
     p5.text('Full Energy: ' + this.system_euler.E.toFixed(2), 10, 20);
   }
+  setup(p5) {}
   reset() {
     this.system_euler.reset();
     this.system_an.reset();
@@ -260,7 +261,7 @@ canon_namespace.CanonPhaseSpaceEuler =
     this.draw(mid_point, this.systems_eu, color_scheme.RED(p5), p5);
     this.drawText(mid_point, this.systems_an, p5);
   };
-
+  setup(p5) {}
   reset() {
     for (let i = 0; i < 4; i++) {
       this.systems_eu[i].reset();

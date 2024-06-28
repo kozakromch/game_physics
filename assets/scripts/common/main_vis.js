@@ -4,7 +4,7 @@ main_visualizator_namespace.getMainVisualizator = function(
     interface, with_axis = false) {
   var context = interface;
   let sc_grid = new sc_grid_namespace.ScGrid(12, 21);
-
+  let canvas;
   let MainVisualizator = function(p5) {
     let base_vis =
         new base_canvas_namespace.BaseCanvasController(context.base_name);
@@ -27,7 +27,9 @@ main_visualizator_namespace.getMainVisualizator = function(
     };
     p5.setup = function() {
       p5.frameRate(30);
-      p5.createCanvas(base_vis.width, base_vis.height, p5.P2D, base_vis.canvas);
+      canvas = p5.createCanvas(
+          base_vis.width, base_vis.height, p5.P2D, base_vis.canvas);
+      context.setup(p5, base_vis.base_name);
       draw_iter(p5);
     };
     p5.draw = function() {

@@ -151,6 +151,7 @@ three_body_namespace.ThreeBodyInterface = class {
   reset() {
     this.three_body.reset();
   }
+  setup(p5) {}
   calcSystem() {
     this.three_body.calcSystem();
   }
