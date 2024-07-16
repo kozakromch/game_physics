@@ -1,5 +1,5 @@
 ---
-title: Численные методы
+title: 1. Численные методы
 author: Роман Козак
 credential: { Петров Степан }
 category: pages

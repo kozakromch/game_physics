@@ -1,5 +1,5 @@
 ---
-title: Мягкие ограничения
+title: 7. Мягкие ограничения
 author: Роман Козак
 credential:
 category: pages
@@ -20,7 +20,7 @@ layout: post
 <script src = "{{site.baseurl}}/assets/scripts/soft_constraints/soft_ball.js"></script>
 
 ## Мягкие ограничения (Soft Constraints)
-
+<div>
 Взяв адекватный интегратор и уравнения пружинки, можно уже делать крутые вещи. По типу таких:
 
 {% include /templates/include_sketch.html path="soft_constraints/sketch/soft_ball_sketch.js" base_name="soft_ball_sketch" %}
@@ -32,8 +32,8 @@ layout: post
 
 Для того чтобы упростить настройку пружинки нужно почти сразу переходить от настройки жесткости с дампингом на настройку частоты и доли критического дампинга.
 
+</div>
 
 
-
-### Источники
+## Источники
 Слайды от создателя Box2D Erin Catto : [Soft Constraints](https://box2d.org/files/ErinCatto_SoftConstraints_GDC2011.pdf)
