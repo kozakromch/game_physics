@@ -134,8 +134,6 @@ hard_ball_namespace.HardBallSystem = class {
       point1.ay += m_r_dot_dot.get([1]) / this.parameters.m;
       point2.ax -= m_r_dot_dot.get([0]) / this.parameters.m;
       point2.ay -= m_r_dot_dot.get([1]) / this.parameters.m;
-
-      console.log(m_r_dot_dot.get([0]), m_r_dot_dot.get([1]));
     }
   }
   // spring between point 0 and start point
