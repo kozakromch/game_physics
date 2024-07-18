@@ -6,9 +6,9 @@ category: pages
 layout: post
 ---
 
-<script src = "{{site.baseurl}}/assets/scripts/libs/p5.min.js"></script>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
 <script src = "{{site.baseurl}}/assets/scripts/libs/p5.scribble.js"></script>
-<script src = "{{site.baseurl}}/assets/scripts/libs/math.js"></script>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/mathjs/13.0.2/math.min.js"></script>
 
 <script src = "{{site.baseurl}}/assets/scripts/common/base_vis.js"> </script>
 <script src = "{{site.baseurl}}/assets/scripts/common/sc_grid.js"> </script>
