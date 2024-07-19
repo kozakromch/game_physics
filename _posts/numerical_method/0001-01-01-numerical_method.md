@@ -4,6 +4,7 @@ author: Роман Козак
 credential: { Петров Степан }
 category: pages
 layout: post
+disqus: true
 ---
 
 <script src = "{{site.baseurl}}/assets/scripts/libs/p5.min.js"></script>
